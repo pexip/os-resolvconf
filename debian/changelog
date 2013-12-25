@@ -1,3 +1,9 @@
+resolvconf (1.63ubuntu16pexip1) pexip; urgency=low
+
+  * Prepare Pexip packaging
+
+ -- John-Mark Bell <jmb@pexip.com>  Wed, 25 Dec 2013 04:27:49 +0000
+
 resolvconf (1.63ubuntu16) precise-proposed; urgency=low
 
   * Update ppp hooks to also exit when passed

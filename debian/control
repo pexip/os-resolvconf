@@ -1,15 +1,17 @@
 Source: resolvconf
 Section: net
 Priority: optional
-Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Maintainer: Pexip AS <packaging@pexip.com>
+XSBC-Pexip-Original-Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
 XSBC-Original-Maintainer: resolvconf maintainers <resolvconf-devel@lists.alioth.debian.org>
-Uploaders: Thomas Hood <jdthood@yahoo.co.uk>, Marco Nenciarini <mnencia@debian.org>
+XSBC-Pexip-Original-Uploaders: Thomas Hood <jdthood@yahoo.co.uk>, Marco Nenciarini <mnencia@debian.org>
 Build-Depends: debhelper (>= 8)
 Homepage: http://alioth.debian.org/projects/resolvconf/
 Vcs-Git: git://git.debian.org/git/resolvconf/resolvconf.git
 Vcs-Browser: http://git.debian.org/?p=resolvconf/resolvconf.git
 DM-Upload-Allowed: yes
 Standards-Version: 3.9.2.0
+XS-Pexip-Upstream: http://archive.ubuntu.com/ubuntu/ precise
 
 Package: resolvconf
 Architecture: all
