@@ -1,27 +1,26 @@
-# Vietnamese translation of resolvconf debconf templates
-# Copyright (C) 2005-2008 Clytie Siddall <clytie@riverland.net.au>
+# Portuguese-Brazilian translation of resolvconf debconf templates
+# Copyright (C) 2013 Adriano Rafael Gomes <adrianorg@arg.eti.br>
 # This file is distributed under the same license as the resolvconf package.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: resolvconf 1.39\n"
+"Project-Id-Version: resolvconf 1.74\n"
 "Report-Msgid-Bugs-To: resolvconf@packages.debian.org\n"
 "POT-Creation-Date: 2011-05-31 20:26+0200\n"
-"PO-Revision-Date: 2008-02-12 22:24+1030\n"
-"Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
-"Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
-"Language: vi\n"
+"PO-Revision-Date: 2013-08-04 14:29-0300\n"
+"Last-Translator: Adriano Rafael Gomes <adrianorg@arg.eti.br>\n"
+"Language-Team: Brazilian Portuguese <debian-l10n-portuguese@lists.debian."
+"org>\n"
+"Language: pt_BR\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: LocFactoryEditor 1.7b3\n"
 
 #. Type: boolean
 #. Description
 #: ../templates:2001
 msgid "Prepare /etc/resolv.conf for dynamic updates?"
-msgstr "Chuẩn bị tập tin « /etc/resolv.conf » để cập nhật động không?"
+msgstr "Preparar /etc/resolv.conf para atualizações dinâmicas?"
 
 #. Type: boolean
 #. Description
@@ -34,12 +33,12 @@ msgid ""
 "the existing /etc/resolv.conf file will be preserved as /etc/resolvconf/"
 "resolv.conf.d/original, and will be restored if this package is removed."
 msgstr ""
-"Gói resolveconf chứa cơ sở hạ tầng cần thiết để cập nhật động tập tin cấu "
-"hình của phần mềm giải quyết. Một phần của cơ sở hạ tầng cần thiết là một "
-"liên kết tượng trưng từ « /etc/resolv.conf » đến « /etc/resolvconf/run/"
-"resolv.conf ». Bật tùy chọn này thì liên kết này sẽ được tạo; tập tin « /etc/"
-"resolv.conf » đã tồn tại sẽ được bảo tồn dưới dạng « /etc/resolvconf/resolv."
-"conf.d/original » và sẽ cũng được phục hồi nếu gói này bị gỡ bỏ."
+"O pacote resolvconf contém a infraestrutura requerida para a atualização "
+"dinâmica do arquivo de configuração do resolvedor. Parte da infraestrutura "
+"necessária é um link simbólico de /etc/resolv.conf para /etc/resolvconf/run/"
+"resolv.conf. Se você escolher essa opção, então esse link será criado; o "
+"arquivo /etc/resolv.conf existente será preservado como /etc/resolvconf/"
+"resolv.conf.d/original, e será restaurado se esse pacote for removido."
 
 #. Type: boolean
 #. Description
@@ -50,10 +49,10 @@ msgid ""
 "dynamically updated. Dynamic updating can then be activated following "
 "instructions in the README file."
 msgstr ""
-"Tắt tùy chọn này thì ngăn cản bản cài đặt tương lại tạo liên kết tượng "
-"trưng, do đó tập tin cấu hình phần mềm giải quyết sẽ không được cập nhật "
-"động. Tuy nhiên, vẫn còn có thể kích hoạt chức năng cập nhật đông tùy theo "
-"hướng dẫn trong tập tin Đọc Đi (README)."
+"Rejeitar essa opção impedirá que instalações futuras recriem o link "
+"simbólico e portanto o arquivo de configuração do resolvedor não será "
+"atualizado dinamicamente. A atualização dinâmica pode ser então ativada "
+"seguindo as instruções do arquivo README."
 
 #. Type: boolean
 #. Description
@@ -62,9 +61,8 @@ msgid ""
 "The presence of resolvconf can affect the behavior of other programs, so it "
 "should not be left installed if unconfigured."
 msgstr ""
-"Sự có mặt của resolvconf có thể ảnh hưởng đến ứng xử của các chương trình "
-"khác, vì vậy bạn không nên để lại bản cài đặt của nó nếu nó chưa được cấu "
-"hình."
+"A presença do resolvconf pode afetar o comportamento de outros programas, "
+"assim, ele não deverá ser deixado instalado se não for configurado."
 
 #. Type: note
 #. Description
@@ -72,7 +70,7 @@ msgstr ""
 #. Description
 #: ../templates:3001 ../templates:4001
 msgid "Reboot recommended"
-msgstr ""
+msgstr "Reinicialização recomendada"
 
 #. Type: note
 #. Description
@@ -83,6 +81,11 @@ msgid ""
 "resolvconf program. However, although installation of the resolvconf package "
 "triggers them to supply their information, some of them fail to do so."
 msgstr ""
+"Fornecedores de informação de servidores de nomes, tais como servidores de "
+"nomes com cache local e configuradores de interfaces, devem fornecer "
+"informação de servidores de nomes para o programa resolvconf. Porém, embora "
+"a instalação do pacote resolvconf dispare-os para que forneçam suas "
+"informações, alguns deles falham ao fazer isso."
 
 #. Type: note
 #. Description
@@ -96,6 +99,14 @@ msgid ""
 "deconfigured. (This incorrect behavior is judged to be less harmful than the "
 "alternative of losing valid information.)"
 msgstr ""
+"Esse bug levaria à perda de informação de servidores de nomes válida na "
+"instalação do pacote resolvconf se a seguinte solução alternativa não fosse "
+"adotada: o resolvconf inclui o conteúdo completo do arquivo /etc/resolv.conf "
+"existente antes da instalação no seu banco de dados até a reinicialização do "
+"sistema. Isso tem o inconveniente de reter a informação de servidores de "
+"nomes mesmo que a interface associada seja desconfigurada mais tarde. (Esse "
+"comportamento incorreto é considerado menos prejudicial que a alternativa de "
+"perder informação válida.)"
 
 #. Type: note
 #. Description
@@ -106,6 +117,10 @@ msgid ""
 "the resolvconf package has been installed on a running system is to reboot "
 "the system."
 msgstr ""
+"Até que o bug em questão seja corrigido e a solução alternativa removida, a "
+"única maneira de garantir que o resolvconf tenha informação de servidores de "
+"nomes totalmente correta depois de ser instalado em um sistema em execução é "
+"reinicializar o sistema."
 
 #. Type: note
 #. Description
@@ -115,12 +130,15 @@ msgid ""
 "about name servers becoming unavailable. To correct this problem it is "
 "recommended that the system be rebooted."
 msgstr ""
+"A remoção do pacote resolvconf pode ter resultado em alguma informação sobre "
+"servidores de nomes ter ficado indisponível. Para corrigir esse problema, é "
+"recomendado que o sistema seja reinicializado."
 
 #. Type: boolean
 #. Description
 #: ../templates:5001
 msgid "Append original file to dynamic file?"
-msgstr "Phụ thêm tập tin gốc vào tập tin động không?"
+msgstr "Adicionar o arquivo original ao arquivo dinâmico?"
 
 #. Type: boolean
 #. Description
@@ -131,10 +149,11 @@ msgid ""
 "nameservers\" lines in /etc/network/interfaces. For more information, please "
 "consult the resolvconf(8) man page and the README file."
 msgstr ""
-"Nếu tập tin cấu hình phần mềm giải quyết tĩnh gốc (/etc/resolv.conf) chứa "
-"địa chỉ của máy phục vụ tên thì các tên đó nên được liệt kê theo dòng « dns-"
-"nameservers » trong tập tin « /etc/network/interfaces ». Để tìm thêm thông "
-"tin, xem trang hướng dẫn (man) resolvconf(8) và tập tin Đọc Đi (README)."
+"Se o arquivo de configuração estático original do resolvedor (/etc/resolv."
+"conf) contém endereços de servidores de nomes, esses endereços devem ser "
+"listados em linhas \"dns-nameservers\" em /etc/network/interfaces. Para mais "
+"informação, por favor, consulte a página de manual resolvconf(8) e o arquivo "
+"README."
 
 #. Type: boolean
 #. Description
@@ -144,9 +163,9 @@ msgid ""
 "brought down and up again, the name server addresses will not be included in "
 "the dynamically generated resolver configuration file."
 msgstr ""
-"Đến khi tập tin « /etc/network/interfaces » đã được chỉnh sửa, và các giao "
-"diện bị ảnh hưởng được tắt rồi bật lại, những địa chỉ máy phục vụ tên sẽ "
-"không được liệt kê trong tập tin cấu hình phần mềm giải quyết được tạo động."
+"Até que /etc/network/interfaces tenha sido editado e as interfaces afetadas "
+"baixadas e subidas novamente, os endereços de servidores de nomes não serão "
+"incluídos no arquivo de configuração do resolvedor gerado dinamicamente."
 
 #. Type: boolean
 #. Description
@@ -158,11 +177,11 @@ msgid ""
 "This will cause the whole of that original resolver configuration file to be "
 "appended to the dynamically generated file."
 msgstr ""
-"Bật tùy chọn này thì dùng một sự khắc phục tạm thời: một liên kết tượng "
-"trưng sẽ được tạo (nếu chưa có) từ tập tin « /etc/resolvconf/resolv.conf.d/"
-"tail » đến tập tin « /etc/resolvconf/resolv.conf.d/original ». Liên kết này "
-"sẽ gây ra phụ thêm toàn bộ tập tin cấu hình phần mềm giải quyết gốc vào tập "
-"tin được tạo ra động."
+"Se você escolher essa opção, uma solução alternativa temporária será usada: "
+"um link simbólico será criado (caso já não exista) de /etc/resolvconf/resolv."
+"conf.d/tail para /etc/resolvconf/resolv.conf.d/original. Isso fará com que "
+"todo o conteúdo do arquivo original de configuração do resolvedor seja "
+"adicionado ao arquivo gerado dinamicamente."
 
 #. Type: boolean
 #. Description
@@ -172,6 +191,6 @@ msgid ""
 "interfaces, the /etc/resolvconf/resolv.conf.d/tail link should be replaced "
 "by one to /dev/null."
 msgstr ""
-"Sau khi các dòng « dns-nameservers » cần thiết đã được thêm vào tập tin « /"
-"etc/network/interfaces », liên kết « /etc/resolvconf/resolv.conf.d/tail » "
-"nên bị thay thế bằng một liên kết tới « /dev/null »."
+"Depois de as linhas \"dns-nameservers\" requeridas terem sido adicionadas a /"
+"etc/network/interfaces, o link /etc/resolvconf/resolv.conf.d/tail deverá ser "
+"substituído por outro que aponte para /dev/null."

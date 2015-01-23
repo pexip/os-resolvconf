@@ -26,16 +26,19 @@ binary-arch:
 
 binary-indep: build
 	dh_testroot
-	dh_installdirs etc sbin lib/resolvconf etc/network/if-up.d etc/network/if-down.d
+	dh_installdirs etc sbin lib/resolvconf usr/share/resolvconf etc/network/if-up.d etc/network/if-down.d var/lib/resolvconf
 	cp -a etc $(DESTDIR)
 	install -p --owner=root --group=root --mode=0755 bin/resolvconf $(DESTDIR)/sbin
 	install -p --owner=root --group=root --mode=0755 bin/list-records $(DESTDIR)/lib/resolvconf
+	install -p --owner=root --group=root --mode=0755 bin/dump-debug-info $(DESTDIR)/usr/share/resolvconf
 	dh_installdebconf
 	dh_lintian
 	dh_installdocs README
 	dh_installman
 	dh_installchangelogs
-	dh_installinit -r
+	dh_systemd_enable
+	dh_installinit --no-start
+	dh_systemd_start -r
 	dh_installppp --name=000resolvconf
 	dh_installifupdown --name=resolvconf
 	dh_installifupdown --name=000resolvconf

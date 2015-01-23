@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: resolvconf 1.41\n"
+"Project-Id-Version: resolvconf 1.72\n"
 "Report-Msgid-Bugs-To: resolvconf@packages.debian.org\n"
-"POT-Creation-Date: 2012-05-02 12:49-0700\n"
-"PO-Revision-Date: 2008-08-03 21:04+0900\n"
+"POT-Creation-Date: 2013-03-26 16:37+0200\n"
+"PO-Revision-Date: 2013-03-26 23:37+0900\n"
 "Last-Translator: Hideki Yamane (Debian-JP) <henrich@debian.or.jp>\n"
 "Language-Team: Japanese <debian-japanese@lists.debian.org>\n"
 "Language: ja\n"
@@ -27,17 +27,17 @@ msgstr "/etc/resolv.conf を動的更新するようにしますか?"
 msgid ""
 "The resolvconf package contains the infrastructure required for dynamic "
 "updating of the resolver configuration file. Part of the necessary "
-"infrastructure is a symbolic link from /etc/resolv.conf to /run/resolvconf/"
-"resolv.conf. If you choose this option then this link will be created; the "
-"existing /etc/resolv.conf file will be preserved as /etc/resolvconf/resolv."
-"conf.d/original, and will be restored if this package is removed."
+"infrastructure is a symbolic link from /etc/resolv.conf to /etc/resolvconf/"
+"run/resolv.conf. If you choose this option then this link will be created; "
+"the existing /etc/resolv.conf file will be preserved as /etc/resolvconf/"
+"resolv.conf.d/original, and will be restored if this package is removed."
 msgstr ""
 "resolvconf パッケージは、リゾルバ設定ファイルの動的更新に必要とされる仕組みを"
-"含んでいます。必要となる仕組みの一つは /etc/resolv.conf から /run/resolvconf/"
-"resolv.conf へのシンボリックリンクです。このオプションを選ぶとこのリンクが作"
-"成されます。すでにある /etc/resolv.conf ファイルは /etc/resolvconf/resolv."
-"conf.d/original として保存されます (このファイルは、パッケージが削除される際"
-"に元に戻されます)。"
+"含んでいます。必要となる仕組みの一つは /etc/resolv.conf から /etc/resolvconf/"
+"run/resolv.conf へのシンボリックリンクです。このオプションを選ぶとこのリンク"
+"が作成されます。すでにある /etc/resolv.conf ファイルは /etc/resolvconf/"
+"resolv.conf.d/original として保存されます (このファイルは、パッケージが削除さ"
+"れる際に元に戻されます)。"
 
 #. Type: boolean
 #. Description
@@ -69,7 +69,7 @@ msgstr ""
 #. Description
 #: ../templates:3001 ../templates:4001
 msgid "Reboot recommended"
-msgstr ""
+msgstr "再起動することを勧めます"
 
 #. Type: note
 #. Description
@@ -80,6 +80,10 @@ msgid ""
 "resolvconf program. However, although installation of the resolvconf package "
 "triggers them to supply their information, some of them fail to do so."
 msgstr ""
+"ローカルキャッシュ用ネームサーバやインターフェース設定プログラムといったネーム"
+"サーバ情報を提供するプログラムは、resolvconf プログラムにネームサーバ情報を提"
+"供することが予測されます。しかし、resolvconf パッケージのインストールはその情"
+"報を提供させるようにはしますが、それに失敗するものがあります。"
 
 #. Type: note
 #. Description
@@ -93,6 +97,12 @@ msgid ""
 "deconfigured. (This incorrect behavior is judged to be less harmful than the "
 "alternative of losing valid information.)"
 msgstr ""
+"このバグにより、以下の対策をとらないと、resolvconf パッケージのインストールで"
+"正しいネームサーバ情報を失ってしまうことがあります: resolvconf は、再起動する"
+"までデータベース内にインストール前の /etc/resolv.conf の内容をすべて持っていま"
+"す。これには、関連するインターフェース設定が後で解除されてもそのネームサーバ情"
+"報を保持してしまう欠点があります。(この誤った挙動は、正しい情報を失うことより"
+"は害は少ないと判断されました。)"
 
 #. Type: note
 #. Description
@@ -103,6 +113,9 @@ msgid ""
 "the resolvconf package has been installed on a running system is to reboot "
 "the system."
 msgstr ""
+"問題となっているバグが修正されて対策が除去されるまで、動作しているシステムに "
+"resolvconf パッケージをインストールした後に完全に正しいネームサーバ情報を "
+"resolvconf に確実に持たせる唯一の方法はシステムを再起動することです。"
 
 #. Type: note
 #. Description
@@ -112,6 +125,9 @@ msgid ""
 "about name servers becoming unavailable. To correct this problem it is "
 "recommended that the system be rebooted."
 msgstr ""
+"resolvconf パッケージの削除によってネームサーバに関する情報の一部が利用できな"
+"くなる可能性があります。この問題を修正するためにシステムを再起動することを勧め"
+"ます。"
 
 #. Type: boolean
 #. Description
@@ -130,7 +146,7 @@ msgid ""
 msgstr ""
 "元々の静的な名前解決ファイル (/etc/resolv.conf) がネームサーバのアドレスを含"
 "んでいる場合、これらのアドレスは、/etc/network/interfaces の \"dns-"
-"nameservers\" 行に記述されている必要があります。詳細に付いては、resolvconf"
+"nameservers\" 行に記述されている必要があります。詳細については、resolvconf"
 "(8) の man ページと README ファイルを参照してください。"
 
 #. Type: boolean
@@ -141,9 +157,9 @@ msgid ""
 "brought down and up again, the name server addresses will not be included in "
 "the dynamically generated resolver configuration file."
 msgstr ""
-"/etc/network/interfaces を編集し、関連するインターフェイスをダウンして再度"
-"アップするようになるまで、ネームサーバのアドレスは動的に生成される名前解決"
-"ファイルに含まれません。"
+"/etc/network/interfaces を編集し、関連するインターフェースをダウンして再度"
+"アップするまで、ネームサーバのアドレスは動的に生成される名前解決ファイルに"
+"含まれません。"
 
 #. Type: boolean
 #. Description
@@ -171,38 +187,3 @@ msgstr ""
 "/etc/network/interfaces に必要な \"dns-nameservers\" 行を加えた後、/etc/"
 "resolvconf/resolv.conf.d/tail へのシンボリックリンクを /dev/null へのリンクに"
 "変更する必要があります。"
-
-#. Type: error
-#. Description
-#: ../templates:6001
-msgid "Removing immutable filesystem bit from /etc/resolv.conf"
-msgstr ""
-
-#. Type: error
-#. Description
-#: ../templates:6001
-msgid ""
-"The file /etc/resolv.conf was marked immutable on the filesystem with the "
-"'chattr' command.  You may have done this to avoid the file being managed by "
-"NetworkManager in the past.  In Ubuntu 12.04 and above, this file is managed "
-"by resolvconf in order to correctly support dynamic sources of DNS "
-"information."
-msgstr ""
-
-#. Type: error
-#. Description
-#: ../templates:6001
-msgid ""
-"The immutable flag on /etc/resolv.conf will be removed now, and the current "
-"file will be moved to /etc/resolvconf/resolv.conf.d/original.  If the "
-"original file contained static resolver configuration, it is recommended "
-"that you copy the file to /etc/resolvconf/resolv.conf.d/head."
-msgstr ""
-
-#. Type: error
-#. Description
-#: ../templates:6001
-msgid ""
-"After upgrade you may remove the /etc/resolv.conf symlink and restore the "
-"original contents of this file, but this is not recommended."
-msgstr ""

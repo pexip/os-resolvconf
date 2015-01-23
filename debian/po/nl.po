@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: resolvconf 1.56\n"
 "Report-Msgid-Bugs-To: resolvconf@packages.debian.org\n"
-"POT-Creation-Date: 2012-05-02 12:49-0700\n"
+"POT-Creation-Date: 2011-05-31 20:26+0200\n"
 "PO-Revision-Date: 2011-06-24 14:04+0200\n"
 "Last-Translator: Vincent Zweije <vincent@zweije.nl>\n"
 "Language-Team: Dutch <debian-l10n-dutch@lists.debian.org>\n"
@@ -27,17 +27,17 @@ msgstr "/etc/resolv.conf klaar maken voor automatische bijwerkingen?"
 msgid ""
 "The resolvconf package contains the infrastructure required for dynamic "
 "updating of the resolver configuration file. Part of the necessary "
-"infrastructure is a symbolic link from /etc/resolv.conf to /run/resolvconf/"
-"resolv.conf. If you choose this option then this link will be created; the "
-"existing /etc/resolv.conf file will be preserved as /etc/resolvconf/resolv."
-"conf.d/original, and will be restored if this package is removed."
+"infrastructure is a symbolic link from /etc/resolv.conf to /etc/resolvconf/"
+"run/resolv.conf. If you choose this option then this link will be created; "
+"the existing /etc/resolv.conf file will be preserved as /etc/resolvconf/"
+"resolv.conf.d/original, and will be restored if this package is removed."
 msgstr ""
 "Het resolvconf-pakket bevat de infrastructuur om automatisch bijwerken van "
 "het resolver-configuratiebestand mogelijk te maken. Een gedeelte van de "
 "noodzakelijke infrastructuur is een symbolische koppeling van /etc/resolv."
-"conf naar /run/resolvconf/resolv.conf. Als u deze optie accepteert zal deze "
-"koppeling gemaakt worden; het bestaande /etc/resolv.conf-bestand zal worden "
-"bewaard als /etc/resolvconf/resolv.conf.d/original en zal worden "
+"conf naar /etc/resolvconf/run/resolv.conf. Als u deze optie accepteert zal "
+"deze koppeling gemaakt worden; het bestaande /etc/resolv.conf-bestand zal "
+"worden bewaard als /etc/resolvconf/resolv.conf.d/original en zal worden "
 "teruggeplaatst als het pakket wordt verwijderd."
 
 #. Type: boolean
@@ -195,38 +195,3 @@ msgstr ""
 "Nadat de benodigde \"dns-nameservers\"-regels zijn toegevoegd aan /etc/"
 "network/interfaces, dient de symbolische koppeling /etc/resolvconf/resolv."
 "conf.d/tail te worden vervangen door één die naar /dev/null wijst."
-
-#. Type: error
-#. Description
-#: ../templates:6001
-msgid "Removing immutable filesystem bit from /etc/resolv.conf"
-msgstr ""
-
-#. Type: error
-#. Description
-#: ../templates:6001
-msgid ""
-"The file /etc/resolv.conf was marked immutable on the filesystem with the "
-"'chattr' command.  You may have done this to avoid the file being managed by "
-"NetworkManager in the past.  In Ubuntu 12.04 and above, this file is managed "
-"by resolvconf in order to correctly support dynamic sources of DNS "
-"information."
-msgstr ""
-
-#. Type: error
-#. Description
-#: ../templates:6001
-msgid ""
-"The immutable flag on /etc/resolv.conf will be removed now, and the current "
-"file will be moved to /etc/resolvconf/resolv.conf.d/original.  If the "
-"original file contained static resolver configuration, it is recommended "
-"that you copy the file to /etc/resolvconf/resolv.conf.d/head."
-msgstr ""
-
-#. Type: error
-#. Description
-#: ../templates:6001
-msgid ""
-"After upgrade you may remove the /etc/resolv.conf symlink and restore the "
-"original contents of this file, but this is not recommended."
-msgstr ""

@@ -14,7 +14,7 @@ _Description: Prepare /etc/resolv.conf for dynamic updates?
  The resolvconf package contains the infrastructure required for
  dynamic updating of the resolver configuration file. Part of the
  necessary infrastructure is a symbolic link from /etc/resolv.conf to
- /run/resolvconf/resolv.conf. If you choose this option then this
+ /etc/resolvconf/run/resolv.conf. If you choose this option then this
  link will be created; the existing /etc/resolv.conf file will be
  preserved as /etc/resolvconf/resolv.conf.d/original, and will be
  restored if this package is removed.
@@ -59,7 +59,7 @@ _Description: Reboot recommended
 
 Template: resolvconf/link-tail-to-original
 Type: boolean
-Default: true
+Default: false
 _Description: Append original file to dynamic file?
  If the original static resolver configuration file (/etc/resolv.conf)
  contains name server addresses, those addresses should be listed on
@@ -82,20 +82,3 @@ _Description: Append original file to dynamic file?
  After the required "dns-nameservers" lines have been added to
  /etc/network/interfaces, the /etc/resolvconf/resolv.conf.d/tail link
  should be replaced by one to /dev/null.
-
-Template: resolvconf/fixing-immutable
-Type: error
-_Description: Removing immutable filesystem bit from /etc/resolv.conf
- The file /etc/resolv.conf was marked immutable on the filesystem with the
- 'chattr' command.  You may have done this to avoid the file being managed
- by NetworkManager in the past.  In Ubuntu 12.04 and above, this file is
- managed by resolvconf in order to correctly support dynamic sources of DNS
- information.
- .
- The immutable flag on /etc/resolv.conf will be removed now, and the current
- file will be moved to /etc/resolvconf/resolv.conf.d/original.  If the
- original file contained static resolver configuration, it is recommended
- that you copy the file to /etc/resolvconf/resolv.conf.d/head.
- .
- After upgrade you may remove the /etc/resolv.conf symlink and restore the
- original contents of this file, but this is not recommended.

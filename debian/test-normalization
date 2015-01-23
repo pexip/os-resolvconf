@@ -50,6 +50,10 @@ test_result "$(echo "nameserver 003:1020:0105:55:0000:1000:0000:0000" | normaliz
 test_result "$(echo " 	nameserver 003:1020:0105:55:0000:1000:0000:0000" | normalized_stdin)" "nameserver 3:1020:105:55::1000:0:0"
 test_result "$(echo "nameserver 30:1020:0105:55:0500:1000:0000:0000" | normalized_stdin)" "nameserver 30:1020:105:55:500:1000::"
 test_result "$(echo "	nameserver 30:1020:0105:55:0500:1000:0000:0000" | normalized_stdin)" "nameserver 30:1020:105:55:500:1000::"
+test_result "$(echo "nameserver 30::0500:100:0009:0000" | normalized_stdin)" "nameserver 30::500:100:9:0"
+test_result "$(echo " 	 nameserver 30::0500:100:0009:0000" | normalized_stdin)" "nameserver 30::500:100:9:0"
+test_result "$(echo "nameserver 30:0500:100::0009:0000" | normalized_stdin)" "nameserver 30:500:100::9:0"
+test_result "$(echo " 	 nameserver 30:0500:100::0009:0000" | normalized_stdin)" "nameserver 30:500:100::9:0"
 test_result "$(echo \
 "#foo
 	nameserver 30:1020:0105:55:0500:1000:0000:0000
