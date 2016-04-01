@@ -51,6 +51,7 @@ case "$CMD" in
 	;;
 esac
 
+[ -d "${RUN_DIR}/interface" ] || { mkdir -p "${RUN_DIR}/interface" ; }
 [ -d "${RUN_DIR}/interface" ] || { report_err "${RUN_DIR}/interface either does not exist or is not a directory" ; exit 1 ; }
 cd "${RUN_DIR}/interface"
 

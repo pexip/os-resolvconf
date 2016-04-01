@@ -1,3 +1,40 @@
+resolvconf (1.79) unstable; urgency=low
+
+  [ Thomas Hood ]
+  * Use which to test for availability of dnssec-triggerd
+  * [19003cb] Drop obsolete versioned dependencies.
+    Thanks to biebl (Closes: 804976)
+  * [b348580] Update README
+  * [7e33af8] Omit chown from example script resolvconf-update-bind.
+    Thanks to Marc Haber (Closes: #819498)
+  * [22bfead] Create runtime dir if it does not exist. (In some upgrade
+    scenarios resolvconf gets called before the postinst or initscripts
+    get run.) Thanks to Martin Pitt (LP: #1536335)
+
+ -- Thomas Hood <jdthood@gmail.com>  Fri, 01 Apr 2016 12:00:00 +0200
+
+resolvconf (1.78) unstable; urgency=low
+
+  [ Marco Nenciarini ]
+  * [dd83369] debian/gbp.conf: Use new-style sections sans "git-"
+  [ Thomas Hood ]
+  * [f73de5c] Add sysv-rc dependency which should have been added
+              in release 1.75 when start and stop were no longer
+              given to update-rc.d (Closes: #787457)
+  * [ac8f46e] postinst: Delete bad rc symlinks arising from #787457.
+
+ -- Thomas Hood <jdthood@gmail.com>  Wed, 03 Jun 2015 12:00:00 +0200
+
+resolvconf (1.77) unstable; urgency=low
+
+  * [0781847] interface-order: match br ifaces at the same
+    priority as eth ifaces (see LP#1446681)
+  * Remove obsolete upgrade code
+  * [00ad4bf] Override immutability attrib on /etc/resolv.conf
+    if dnssec-trigger is installed. See #776778 for background.
+
+ -- Thomas Hood <jdthood@gmail.com>  Tue, 21 Apr 2015 21:04:08 +0200
+
 resolvconf (1.76.1) unstable; urgency=medium
 
   * [eb81ca0] Eliminate bashisms.

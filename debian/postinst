@@ -22,20 +22,24 @@ is_immutable_file() {
 	echo "$ATTR" | awk '$1 ~ /i/ { exit 0; }; { exit 1; }'
 }
 
-### Deal with obsolete configuration files ###
-rm -f /etc/dhcp3/dhclient-enter-hooks.d/resolvconf
-[ -f /etc/resolvconf/update.d/bind ] && mv -f /etc/resolvconf/update.d/bind /etc/resolvconf/update.d/bind.dpkg-old
+dnssec_trigger_is_installed() {
+	which dnssec-triggerd >/dev/null 2>&1 ;
+}
 
-### Clean up old systemd symlinks from release 1.75: see #749405 ###
 case "$1" in
   configure)
-	if [ "$2" = "1.75" ] ; then
-		deb-systemd-helper purge resolvconf.service
+	### Deal with obsolete configuration files ###
+	rm -f /etc/dhcp3/dhclient-enter-hooks.d/resolvconf
+	[ -f /etc/resolvconf/update.d/bind ] && mv -f /etc/resolvconf/update.d/bind /etc/resolvconf/update.d/bind.dpkg-old
+
+	### If there are "S" runlevel symlinks in runlevels 1-5 then that is bad. Delete them. ###
+	G='/etc/rc[1-5].d/S??resolvconf'
+	if [ "$(echo $G)" != "$G" ] ; then
+		update-rc.d resolvconf remove >/dev/null || :
 	fi
 	;;
 esac
 
-# We use dh_installinit with --no-start
 #DEBHELPER#
 
 ### Create run-time directories and linkify ###
@@ -110,13 +114,6 @@ case "$1" in
 		fi
 	fi
 
-	# Move flag file from old to new location.
-	# Drop this code after release of Jessie, since the old location was only used in a few post-Wheezy pre-Jessie releases
-	if [ -e "/etc/resolvconf/do-not-linkify-resolvconf" ] ; then
-		:> /var/lib/resolvconf/linkified
-		rm -f "/etc/resolvconf/do-not-linkify-resolvconf"
-	fi
-
 	# Do linkify once again on dpkg-reconfigure
 	if [ "$DEBCONF_RECONFIGURE" = 1 ] || [ "$1" = reconfigure ] ; then
 		rm -f /var/lib/resolvconf/linkified
@@ -137,8 +134,15 @@ case "$1" in
 		db_get resolvconf/linkify-resolvconf
 		if [ "$RET" = "true" ] ; then
 			if is_immutable_file /etc/resolv.conf ; then
-				report_err "Cannot replace the current /etc/resolv.conf with a symbolic link because it is immutable; to correct this problem, gain root privileges in a terminal and run 'chattr -i /etc/resolv.conf' and then 'dpkg --configure resolvconf'; aborting"
-				exit 1
+				if dnssec_trigger_is_installed ; then
+					# dnssec-trigger sets the immutability attribute. Override it.
+					# See #776778 for background.
+					chattr -i /etc/resolv.conf
+				else
+					# Respect the admin
+					report_err "Cannot replace the current /etc/resolv.conf with a symbolic link because it is immutable; to correct this problem, gain root privileges in a terminal and run 'chattr -i /etc/resolv.conf' and then 'dpkg --configure resolvconf'; aborting"
+					exit 1
+				fi
 			else
 				if
 					[ -f /etc/resolv.conf ] \

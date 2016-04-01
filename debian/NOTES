@@ -3,18 +3,10 @@
 
 TODO
 ----
-* Add a Systemd unit file obeying the dictates of policy §9.11.
-  See #700846. 
-  Instructions from https://wiki.debian.org/Systemd/Packaging:
-  + Add Build-Depends on dh-systemd (>= 1.5)
-  + Run dh_systemd_enable before dh_installinit
-  + Run dh_systemd_start after dh_installinit
-
 * File bug reports against all packages containing suppliers of nameserver
   information, asking each to add a resolvconf packaging-event hook script.
-  Still to be submitted: dhcpcd5, pump, udhcpc, unbound
+  Still to be submitted: dhcpcd5, pump, udhcpc
 
-* In Jessie+1, drop the deletion of /etc/resolvconf/do-not-linkify-resolvconf.
 * In Jessie+1, drop the use of /etc/resolvconf/run; use /run/resolvconf directly.
 
 awk
