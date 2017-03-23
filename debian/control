@@ -11,7 +11,7 @@ Vcs-Git: git://git.debian.org/git/resolvconf/resolvconf.git
 Vcs-Browser: http://git.debian.org/?p=resolvconf/resolvconf.git
 DM-Upload-Allowed: yes
 Standards-Version: 3.9.2.0
-XS-Pexip-Upstream: http://archive.ubuntu.com/ubuntu/ precise
+XS-Pexip-Upstream: http://ftp.debian.org/debian/ jessie
 
 Package: resolvconf
 Architecture: all
