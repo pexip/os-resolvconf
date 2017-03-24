@@ -2,22 +2,20 @@ Source: resolvconf
 Section: net
 Priority: optional
 Maintainer: Pexip AS <packaging@pexip.com>
-XSBC-Pexip-Original-Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
-XSBC-Original-Maintainer: resolvconf maintainers <resolvconf-devel@lists.alioth.debian.org>
-XSBC-Pexip-Original-Uploaders: Thomas Hood <jdthood@yahoo.co.uk>, Marco Nenciarini <mnencia@debian.org>
+XSBC-Pexip-Original-Maintainer: resolvconf maintainers <resolvconf-devel@lists.alioth.debian.org>
+XSBC-Pexip-Original-Uploaders: Thomas Hood <jdthood@gmail.com>, Marco Nenciarini <mnencia@debian.org>
 Build-Depends: debhelper (>= 8)
 Homepage: http://alioth.debian.org/projects/resolvconf/
-Vcs-Git: git://git.debian.org/git/resolvconf/resolvconf.git
-Vcs-Browser: http://git.debian.org/?p=resolvconf/resolvconf.git
-DM-Upload-Allowed: yes
-Standards-Version: 3.9.2.0
+Vcs-Git: git://anonscm.debian.org/resolvconf/resolvconf.git
+Vcs-Browser: http://anonscm.debian.org/gitweb/?p=resolvconf/resolvconf.git
+Standards-Version: 3.9.6.0
 XS-Pexip-Upstream: http://ftp.debian.org/debian/ jessie
 
 Package: resolvconf
 Architecture: all
-Enhances: isc-dhcp-client, dhcpcd, pump, udhcpc, ppp, ifupdown, network-manager, bind9, dnsmasq, pdnsd, totd, libc6, nscd
-Depends: lsb-base, ${misc:Depends}
-Pre-Depends: initscripts (>= 2.88dsf-13.10)
+Enhances: isc-dhcp-client, dhcpcd, pump, udhcpc, ppp, ifupdown, network-manager, dnsmasq, pdnsd, libc6, nscd
+Pre-Depends: ifupdown (>= 0.7.5), initscripts (>= 2.88dsf-34), ${misc:Pre-Depends}
+Depends: lsb-base (>= 4.1+Debian3), ${misc:Depends}
 Breaks: dnscache-run, dhcp3-client (<< 4.1.1-P1-15+squeeze1)
 Description: name server information handler
  Resolvconf is a framework for keeping up to date the system's

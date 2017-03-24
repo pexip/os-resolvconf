@@ -5,6 +5,7 @@ set -e
 MYNAME=resolvconf.preinst
 report() { echo "${MYNAME}: $*" ; }
 report_err() { report "Error: $*" >&2 ; }
+report_warn() { report "Warning: $*" >&2 ; }
 report_info() { report "$*" >&2 ; }
 
 is_installed() {
@@ -17,19 +18,18 @@ is_installed() {
 ### Create run-time directories ###
 #
 # We create the run-time directories here, in the preinst, so that even if
-# resolvconf is run before the postinst runs then there is nevertheless a
-# place for resolvconf to store data.  (The latter can occur if resolvconf
+# resolvconf is run before the postinst runs there is nevertheless a place
+# for resolvconf to store data.  The latter can occur if resolvconf
 # is installed simultaneously with a caching nameserver package whose
-# postinst runs resolvconf to add its IP address.)
-#
-# The new standard location is /run;
-# the old standard location was /lib/init/rw on Debian, /var/run/ on Ubuntu.
+# postinst runs resolvconf to add its IP address.
 #
 case "$1" in
   install|upgrade)
-	# Ensure that /run/resolvconf/interface exists.
-	mkdir -p /run/resolvconf/interface
+	# Ensure that /etc/resolvconf exists.
+	mkdir -p /etc/resolvconf
 
+	# Ensure that /run/resolvconf/interface exists.
+	mkdir -p /run/resolvconf/interface 
 	;;
   # abort-upgrade)
 	# Don't do anything because we don't anything in the postrm on upgrade or on failed-upgrade

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: resolvconf 1.55\n"
 "Report-Msgid-Bugs-To: resolvconf@packages.debian.org\n"
-"POT-Creation-Date: 2012-05-02 12:49-0700\n"
+"POT-Creation-Date: 2011-05-31 20:26+0200\n"
 "PO-Revision-Date: 2011-06-04 10:55+0400\n"
 "Last-Translator: Yuri Kozlov <yuray@komyakino.ru>\n"
 "Language-Team: Russian <debian-l10n-russian@lists.debian.org>\n"
@@ -15,8 +15,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Lokalize 1.0\n"
-"Plural-Forms:  nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms:  nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 #. Type: boolean
 #. Description
@@ -30,14 +30,14 @@ msgstr "Включить динамическое обновление /etc/reso
 msgid ""
 "The resolvconf package contains the infrastructure required for dynamic "
 "updating of the resolver configuration file. Part of the necessary "
-"infrastructure is a symbolic link from /etc/resolv.conf to /run/resolvconf/"
-"resolv.conf. If you choose this option then this link will be created; the "
-"existing /etc/resolv.conf file will be preserved as /etc/resolvconf/resolv."
-"conf.d/original, and will be restored if this package is removed."
+"infrastructure is a symbolic link from /etc/resolv.conf to /etc/resolvconf/"
+"run/resolv.conf. If you choose this option then this link will be created; "
+"the existing /etc/resolv.conf file will be preserved as /etc/resolvconf/"
+"resolv.conf.d/original, and will be restored if this package is removed."
 msgstr ""
 "Пакет resolvconf содержит инфраструктуру для динамического обновления файла "
 "настройки определителя имён. Одной из необходимых частей инфраструктуры "
-"является символическая ссылка /etc/resolv.conf на /run/resolvconf/resolv."
+"является символическая ссылка /etc/resolv.conf на /etc/resolvconf/run/resolv."
 "conf. Если вы ответите утвердительно, то такая ссылка будет создана. "
 "Существующий файл /etc/resolv.conf будет сохранён под именем /etc/resolvconf/"
 "resolv.conf.d/original, и будет восстановлен при удалении пакета."
@@ -130,8 +130,9 @@ msgid ""
 "about name servers becoming unavailable. To correct this problem it is "
 "recommended that the system be rebooted."
 msgstr ""
-"Удаление пакета resolvconf может привести потере информации о серверах имён. "
-"Для устранения проблемы перезагрузите систему."
+"Удаление пакета resolvconf может привести потере информации "
+"о серверах имён. Для устранения проблемы перезагрузите "
+"систему."
 
 #. Type: boolean
 #. Description
@@ -150,8 +151,8 @@ msgid ""
 msgstr ""
 "Если ваш статический файл настройки определителя имён (/etc/resolv.conf) "
 "содержит адреса серверов имён, то эти адреса должны быть записаны в строках "
-"«dns-nameservers» в файл /etc/network/interfaces. Подробней об этом написано "
-"на странице руководства resolvconf(8) и в файле README."
+"«dns-nameservers» в файл /etc/network/interfaces. Подробней об этом "
+"написано на странице руководства resolvconf(8) и в файле README."
 
 #. Type: boolean
 #. Description
@@ -193,37 +194,3 @@ msgstr ""
 "nameservers», нужно изменить символическую ссылку /etc/resolvconf/resolv."
 "conf.d/tail, чтобы она указывала на /dev/null."
 
-#. Type: error
-#. Description
-#: ../templates:6001
-msgid "Removing immutable filesystem bit from /etc/resolv.conf"
-msgstr ""
-
-#. Type: error
-#. Description
-#: ../templates:6001
-msgid ""
-"The file /etc/resolv.conf was marked immutable on the filesystem with the "
-"'chattr' command.  You may have done this to avoid the file being managed by "
-"NetworkManager in the past.  In Ubuntu 12.04 and above, this file is managed "
-"by resolvconf in order to correctly support dynamic sources of DNS "
-"information."
-msgstr ""
-
-#. Type: error
-#. Description
-#: ../templates:6001
-msgid ""
-"The immutable flag on /etc/resolv.conf will be removed now, and the current "
-"file will be moved to /etc/resolvconf/resolv.conf.d/original.  If the "
-"original file contained static resolver configuration, it is recommended "
-"that you copy the file to /etc/resolvconf/resolv.conf.d/head."
-msgstr ""
-
-#. Type: error
-#. Description
-#: ../templates:6001
-msgid ""
-"After upgrade you may remove the /etc/resolv.conf symlink and restore the "
-"original contents of this file, but this is not recommended."
-msgstr ""

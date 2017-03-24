@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: resolvconf 1.37\n"
 "Report-Msgid-Bugs-To: resolvconf@packages.debian.org\n"
-"POT-Creation-Date: 2012-05-02 12:49-0700\n"
+"POT-Creation-Date: 2011-05-31 20:26+0200\n"
 "PO-Revision-Date: 2008-02-11 19:03+0000\n"
 "Last-Translator: Jacobo Tarrio <jtarrio@debian.org>\n"
 "Language-Team: Galician <proxecto@trasno.net>\n"
@@ -27,14 +27,14 @@ msgstr "¿Preparar /etc/resolv.conf para actualizacións dinámicas?"
 msgid ""
 "The resolvconf package contains the infrastructure required for dynamic "
 "updating of the resolver configuration file. Part of the necessary "
-"infrastructure is a symbolic link from /etc/resolv.conf to /run/resolvconf/"
-"resolv.conf. If you choose this option then this link will be created; the "
-"existing /etc/resolv.conf file will be preserved as /etc/resolvconf/resolv."
-"conf.d/original, and will be restored if this package is removed."
+"infrastructure is a symbolic link from /etc/resolv.conf to /etc/resolvconf/"
+"run/resolv.conf. If you choose this option then this link will be created; "
+"the existing /etc/resolv.conf file will be preserved as /etc/resolvconf/"
+"resolv.conf.d/original, and will be restored if this package is removed."
 msgstr ""
 "O paquete \"resolvconf\" contén a infraestrutura necesaria para actualizar "
 "dinamicamente o ficheiro de configuración do resolvedor. Parte dela é unha "
-"ligazón simbólica de /etc/resolv.conf a /run/resolvconf/resolv.conf. Se "
+"ligazón simbólica de /etc/resolv.conf a /etc/resolvconf/run/resolv.conf. Se "
 "escolle esta opción, hase crear esa ligazón; o ficheiro /etc/resolv.conf "
 "existente hase conservar coma /etc/resolvconf/resolv.conf.d/original , e "
 "hase restaurar se se elimina este paquete."
@@ -173,38 +173,3 @@ msgstr ""
 "Despois de engadir as liñas \"dns-nameserver\" necesarias ao ficheiro /etc/"
 "network/interfaces , deberíase substituír a ligazón /etc/resolvconf/resolv."
 "conf.d/tail por unha ligazón a /dev/null."
-
-#. Type: error
-#. Description
-#: ../templates:6001
-msgid "Removing immutable filesystem bit from /etc/resolv.conf"
-msgstr ""
-
-#. Type: error
-#. Description
-#: ../templates:6001
-msgid ""
-"The file /etc/resolv.conf was marked immutable on the filesystem with the "
-"'chattr' command.  You may have done this to avoid the file being managed by "
-"NetworkManager in the past.  In Ubuntu 12.04 and above, this file is managed "
-"by resolvconf in order to correctly support dynamic sources of DNS "
-"information."
-msgstr ""
-
-#. Type: error
-#. Description
-#: ../templates:6001
-msgid ""
-"The immutable flag on /etc/resolv.conf will be removed now, and the current "
-"file will be moved to /etc/resolvconf/resolv.conf.d/original.  If the "
-"original file contained static resolver configuration, it is recommended "
-"that you copy the file to /etc/resolvconf/resolv.conf.d/head."
-msgstr ""
-
-#. Type: error
-#. Description
-#: ../templates:6001
-msgid ""
-"After upgrade you may remove the /etc/resolv.conf symlink and restore the "
-"original contents of this file, but this is not recommended."
-msgstr ""

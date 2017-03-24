@@ -30,5 +30,18 @@ for NS in $IF_DNS_NAMESERVERS ; do
 "
 done
 
-echo -n "$R" | /sbin/resolvconf -a "${IFACE}.${ADDRFAM}"
+# Note: arguments of multiple instances of options are separated by newlines
+set_NS_to_first_arg() { NS="$1" ; }
+STANDARD_IFS="$IFS"
+IFS='
+'
+for OPT in $IF_DNS_NAMESERVER ; do
+	IFS="$STANDARD_IFS"
+	set_NS_to_first_arg $OPT
+	[ "$NS" ] && R="${R}nameserver $NS
+"
+done
+IFS="$STANDARD_IFS"
+
+echo -n "$R" | /sbin/resolvconf -a "${IFACE}.${ADDRFAM}" || :
 

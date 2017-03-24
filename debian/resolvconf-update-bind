@@ -1,11 +1,16 @@
 #!/bin/bash
 # Need bash because we use ${foo//bar/baz}
 #
-# Example script illustrating updating a named options file
+# Example script illustrating how to write a dynamic BIND named
+# options file containing an up-to-date fowarders list.
+#
+# To use the dynamically generated file, include it from named.conf.
 # 
-# This example was prepared for Bind version 8.  For Bind 9
-# the script should be modified so that it generates only the
+# This example was prepared for BIND version 8.  For use with BIND 9
+# the script should first be modified so that it generates only the
 # forwarders{} substatement, not the whole options{} statement.
+# Much safer. See http://bugs.debian.org/483098 for the request that
+# such a file be included in the bind9 package.
 #
 # Resolvconf may run this script even if named is not running.
 # If a bind package is installed then we go ahead and update
@@ -14,6 +19,7 @@
 # Assumption: On entry, PWD contains the resolv.conf-type files.
 #
 # Written by Thomas Hood <jdthood@gmail.com>
+#
 # Licensed under the GNU GPL.  See /usr/share/doc/resolvconf/copyright.
 
 set -e

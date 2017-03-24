@@ -1,14 +1,13 @@
-# SOME DESCRIPTIVE TITLE.
+# LANGUAGE translation of resolvconf debconf templates
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# This file is distributed under the same license as the resolvconf package.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: resolvconf\n"
+"Project-Id-Version: resolvconf VERSION\n"
 "Report-Msgid-Bugs-To: resolvconf@packages.debian.org\n"
-"POT-Creation-Date: 2012-05-02 12:49-0700\n"
+"POT-Creation-Date: 2011-05-31 20:26+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -29,10 +28,10 @@ msgstr ""
 msgid ""
 "The resolvconf package contains the infrastructure required for dynamic "
 "updating of the resolver configuration file. Part of the necessary "
-"infrastructure is a symbolic link from /etc/resolv.conf to /run/resolvconf/"
-"resolv.conf. If you choose this option then this link will be created; the "
-"existing /etc/resolv.conf file will be preserved as /etc/resolvconf/resolv."
-"conf.d/original, and will be restored if this package is removed."
+"infrastructure is a symbolic link from /etc/resolv.conf to /etc/resolvconf/"
+"run/resolv.conf. If you choose this option then this link will be created; "
+"the existing /etc/resolv.conf file will be preserved as /etc/resolvconf/"
+"resolv.conf.d/original, and will be restored if this package is removed."
 msgstr ""
 
 #. Type: boolean
@@ -146,39 +145,4 @@ msgid ""
 "After the required \"dns-nameservers\" lines have been added to /etc/network/"
 "interfaces, the /etc/resolvconf/resolv.conf.d/tail link should be replaced "
 "by one to /dev/null."
-msgstr ""
-
-#. Type: error
-#. Description
-#: ../templates:6001
-msgid "Removing immutable filesystem bit from /etc/resolv.conf"
-msgstr ""
-
-#. Type: error
-#. Description
-#: ../templates:6001
-msgid ""
-"The file /etc/resolv.conf was marked immutable on the filesystem with the "
-"'chattr' command.  You may have done this to avoid the file being managed by "
-"NetworkManager in the past.  In Ubuntu 12.04 and above, this file is managed "
-"by resolvconf in order to correctly support dynamic sources of DNS "
-"information."
-msgstr ""
-
-#. Type: error
-#. Description
-#: ../templates:6001
-msgid ""
-"The immutable flag on /etc/resolv.conf will be removed now, and the current "
-"file will be moved to /etc/resolvconf/resolv.conf.d/original.  If the "
-"original file contained static resolver configuration, it is recommended "
-"that you copy the file to /etc/resolvconf/resolv.conf.d/head."
-msgstr ""
-
-#. Type: error
-#. Description
-#: ../templates:6001
-msgid ""
-"After upgrade you may remove the /etc/resolv.conf symlink and restore the "
-"original contents of this file, but this is not recommended."
 msgstr ""

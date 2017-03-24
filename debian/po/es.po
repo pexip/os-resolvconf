@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: resolvconf 1.59\n"
 "Report-Msgid-Bugs-To: resolvconf@packages.debian.org\n"
-"POT-Creation-Date: 2012-05-02 12:49-0700\n"
+"POT-Creation-Date: 2011-05-31 20:26+0200\n"
 "PO-Revision-Date: 2011-09-21 23:44+0200\n"
 "Last-Translator: Javier Fernández-Sanguino <jfs@debian.org>\n"
 "Language-Team: Spanish <debian-l10n-spanish@lists.debian.org>\n"
@@ -30,18 +30,18 @@ msgstr ""
 msgid ""
 "The resolvconf package contains the infrastructure required for dynamic "
 "updating of the resolver configuration file. Part of the necessary "
-"infrastructure is a symbolic link from /etc/resolv.conf to /run/resolvconf/"
-"resolv.conf. If you choose this option then this link will be created; the "
-"existing /etc/resolv.conf file will be preserved as /etc/resolvconf/resolv."
-"conf.d/original, and will be restored if this package is removed."
+"infrastructure is a symbolic link from /etc/resolv.conf to /etc/resolvconf/"
+"run/resolv.conf. If you choose this option then this link will be created; "
+"the existing /etc/resolv.conf file will be preserved as /etc/resolvconf/"
+"resolv.conf.d/original, and will be restored if this package is removed."
 msgstr ""
 "El paquete resolvconf incluye la infraestructura necesaria para poder "
 "actualizar de forma dinámica el fichero de configuración de resolución. Un "
-"enlace simbólico de «/etc/resolv.conf» a «/run/resolvconf/resolv.conf» es "
-"parte de la infraestructura necesaria. Si elije esta opción se creará este "
-"enlace. Se preservarán los contenidos del fichero «/etc/resolv.conf» actual "
-"en el fichero «/etc/resolvconf/resolv.conf.d/original» y se restaurará este "
-"archivo si elimina el paquete."
+"enlace simbólico de «/etc/resolv.conf» a «/etc/resolvconf/run/resolv.conf» "
+"es parte de la infraestructura necesaria. Si elije esta opción se creará "
+"este enlace. Se preservarán los contenidos del fichero «/etc/resolv.conf» "
+"actual en el fichero «/etc/resolvconf/resolv.conf.d/original» y se "
+"restaurará este archivo si elimina el paquete."
 
 #. Type: boolean
 #. Description
@@ -84,12 +84,7 @@ msgid ""
 "interface configurers are expected to supply name server information to the "
 "resolvconf program. However, although installation of the resolvconf package "
 "triggers them to supply their information, some of them fail to do so."
-msgstr ""
-"Se espera que los proveedores de información de servidores de nombres, como "
-"puedan ser servidores de nombres con caché local y los sistemas que "
-"configuran las interfaces, de información al programa resolvconf. Sin "
-"embargo, aunque la instalación del paquete resolvconf hace que éstos "
-"proporcionen esta información, algunos de éstos pueden no darla."
+msgstr "Se espera que los proveedores de información de servidores de nombres, como puedan ser servidores de nombres con caché local y los sistemas que configuran las interfaces, de información al programa resolvconf. Sin embargo, aunque la instalación del paquete resolvconf hace que éstos proporcionen esta información, algunos de éstos pueden no darla."
 
 #. Type: note
 #. Description
@@ -102,16 +97,7 @@ msgid ""
 "information is retained even if the associated interface is later "
 "deconfigured. (This incorrect behavior is judged to be less harmful than the "
 "alternative of losing valid information.)"
-msgstr ""
-"Este error puede dar lugar a la pérdida de la información de servidores de "
-"nombres válidos al instalar el paquete resolvconf si no se adoptar las "
-"siguientes medidas de para evitar el problema: resolvconf incluye los "
-"contenidos completos del fichero «/etc/resolv.conf» antes de la instalación "
-"en su base de datos hasta un reinicio del sistema. Esto tiene el "
-"inconveniente de que la información de servidores de nombres se mantiene aún "
-"cuando la interfaz asociada se desconfigure (se considera que este "
-"comportamiento inválido es menos perjuidicial que la alternativa de perder "
-"información válida)."
+msgstr "Este error puede dar lugar a la pérdida de la información de servidores de nombres válidos al instalar el paquete resolvconf si no se adoptar las siguientes medidas de para evitar el problema: resolvconf incluye los contenidos completos del fichero «/etc/resolv.conf» antes de la instalación en su base de datos hasta un reinicio del sistema. Esto tiene el inconveniente de que la información de servidores de nombres se mantiene aún cuando la interfaz asociada se desconfigure (se considera que este comportamiento inválido es menos perjuidicial que la alternativa de perder información válida)."
 
 #. Type: note
 #. Description
@@ -121,11 +107,7 @@ msgid ""
 "to ensure that resolvconf has fully correct name server information after "
 "the resolvconf package has been installed on a running system is to reboot "
 "the system."
-msgstr ""
-"Hasta que este error no se haya arreglado y se haya eliminado este arreglo "
-"transitorio, la única forma de asegurarse que resolvconf tiene la "
-"información correcta de los servidores de nombres después de su instalación "
-"es reiniciar el sistema."
+msgstr "Hasta que este error no se haya arreglado y se haya eliminado este arreglo transitorio, la única forma de asegurarse que resolvconf tiene la información correcta de los servidores de nombres después de su instalación es reiniciar el sistema."
 
 #. Type: note
 #. Description
@@ -134,10 +116,7 @@ msgid ""
 "The removal of the resolvconf package may have resulted in some information "
 "about name servers becoming unavailable. To correct this problem it is "
 "recommended that the system be rebooted."
-msgstr ""
-"Es posible que la eliminación del paquete resolvconf haya tenido como "
-"resultado la pérdida de alguna información sobre los servidores de nombres. "
-"Se recomienda reiniciar el sistema para corregir este problema."
+msgstr "Es posible que la eliminación del paquete resolvconf haya tenido como resultado la pérdida de alguna información sobre los servidores de nombres. Se recomienda reiniciar el sistema para corregir este problema."
 
 #. Type: boolean
 #. Description
@@ -200,38 +179,3 @@ msgstr ""
 "Debería reemplazar el enlace simbólico «/etc/resolvconf/resolv.conf.d/tail» "
 "para que sea un enlace a «/dev/null» una vez haya añadido las líneas «dns-"
 "nameservers» necesarias a «/etc/network/interfaces»."
-
-#. Type: error
-#. Description
-#: ../templates:6001
-msgid "Removing immutable filesystem bit from /etc/resolv.conf"
-msgstr ""
-
-#. Type: error
-#. Description
-#: ../templates:6001
-msgid ""
-"The file /etc/resolv.conf was marked immutable on the filesystem with the "
-"'chattr' command.  You may have done this to avoid the file being managed by "
-"NetworkManager in the past.  In Ubuntu 12.04 and above, this file is managed "
-"by resolvconf in order to correctly support dynamic sources of DNS "
-"information."
-msgstr ""
-
-#. Type: error
-#. Description
-#: ../templates:6001
-msgid ""
-"The immutable flag on /etc/resolv.conf will be removed now, and the current "
-"file will be moved to /etc/resolvconf/resolv.conf.d/original.  If the "
-"original file contained static resolver configuration, it is recommended "
-"that you copy the file to /etc/resolvconf/resolv.conf.d/head."
-msgstr ""
-
-#. Type: error
-#. Description
-#: ../templates:6001
-msgid ""
-"After upgrade you may remove the /etc/resolv.conf symlink and restore the "
-"original contents of this file, but this is not recommended."
-msgstr ""

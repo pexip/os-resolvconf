@@ -1,205 +1,220 @@
-resolvconf (1.63ubuntu16pexip1) pexip; urgency=low
+resolvconf (1.76.1pexip1) pexip; urgency=low
 
-  * Prepare Pexip packaging
+  * Migrate to Jessie
+  * Retain the following changes from Ubuntu:
+    - debian/postinst: Make /etc/resolv.conf a relative symlink so that it
+      works when setting up chroots.
+    - Eliminate all references to /etc/resolvconf/run.  This should all be done
+      directly in /run, there is no reason to support making any of this
+      configurable with a symlink since we already have a versioned dependency
+      on the version of initscripts that introduces the /run transition.
+    - Also remove debian/triggers to avoid needlessly calling resolvconf's
+      postinst. (LP: #931335)
+    - Use an upstart job instead of systemd.
+    - Move the #DEBHELPER# token in debian/postinst to after the resolv.conf
+      symlink is set, so the init script can actually start (since it expects
+      /etc/resolv.conf to be a symlink).
 
- -- John-Mark Bell <jmb@pexip.com>  Wed, 25 Dec 2013 04:27:49 +0000
+ -- John-Mark Bell <jmb@pexip.com>  Thu, 23 Mar 2017 23:56:12 +0000
 
-resolvconf (1.63ubuntu16) precise-proposed; urgency=low
+resolvconf (1.76.1) unstable; urgency=medium
 
-  * Update ppp hooks to also exit when passed
-    /org/freedesktop/NetworkManager/PPP/* (LP: #994575)
+  * [eb81ca0] Eliminate bashisms.
+    Thanks to Michael Gilbert (Closes: #775356)
 
- -- Stéphane Graber <stgraber@ubuntu.com>  Fri, 07 Sep 2012 18:03:35 -0400
+ -- Thomas Hood <jdthood@gmail.com>  Fri, 23 Jan 2015 21:46:34 +0100
 
-resolvconf (1.63ubuntu15) precise-proposed; urgency=low
+resolvconf (1.76) unstable; urgency=low
 
-  * Change resolvconf's pppd hook script such that it does not call
-    resolvconf if pppd was run by nm-pptp-service. (LP: #994575)
+  * resolvconf.service: Install into sysinit.target, not into
+    network.target (Closes: #749405)
+    Thanks to Martin Pitt and Edward Allcutt
+  * [c405030] Add exclusion for L2TP VPN plugin (LP#1349011)
+  * [4cbd73d] Bump Standards-Version
 
- -- Stéphane Graber <stgraber@ubuntu.com>  Wed, 18 Jul 2012 16:07:01 -0400
+ -- Thomas Hood <jdthood@gmail.com>  Fri, 10 Oct 2014 13:42:54 +0200
 
-resolvconf (1.63ubuntu14) precise-proposed; urgency=low
+resolvconf (1.75) unstable; urgency=low
 
-  * Call db_go after the db_input command so that the debconf error
-    message is actually shown to the user.
+  * [49dedb8] Update man page re: "dns-nameserver" (Closes: 718021)
+  * [6195584] Don't give update-rc.d start and stop (Closes: #718232)
+  * [eed7eb1] Add pt_BR.po. Thanks to A. R. Gomes (Closes: #718714)
+  * [a84a8f2] Remove buggy dnscache update script which should be in
+              dnscache-run anyway
+  * [b93b150] Fix typo in README (Closes: #737158)
+  * [6a47a50] Add systemd unit. Thanks Martin Pitt (Closes: #700846)
 
- -- Stéphane Graber <stgraber@ubuntu.com>  Mon, 14 May 2012 12:31:58 -0400
+ -- Thomas Hood <jdthood@gmail.com>  Thu, 08 May 2014 11:57:29 +0200
 
-resolvconf (1.63ubuntu13) precise-proposed; urgency=low
+resolvconf (1.74) unstable; urgency=low
 
-  [ Stéphane Graber ]
-  * In is_immutable_file, if lsattr doesn't return anything on stdout,
-    return 1 and hide stderr. This fixes lsattr failing on non-ext
-    filesystems. (LP: #994539)
+  * [bb84ffc] Tweak the README:
+  * [e3910a7] Recommend use of 'dns-nameserver'.
+              No longer mention the useless deprecated 'dns-domain'.
+  * [2fe6083] Add dump-debug-info script
+  * [b24b66d] Add "--after" option to list-records
 
-  [ Steve Langasek ]
-  * Fix syntax of db_input command, which is part of why we're seeing
-    failures in bug #994539.
+ -- Thomas Hood <jdthood@gmail.com>  Sat, 20 Jul 2013 21:00:00 +0200
 
- -- Stéphane Graber <stgraber@ubuntu.com>  Mon, 07 May 2012 16:04:27 -0700
-
-resolvconf (1.63ubuntu12) precise-proposed; urgency=low
-
-  * Instead of throwing an error that aborts the upgrade when
-    /etc/resolv.conf is immutable, pop a debconf error message to let the
-    user know what's happening, then clear the immutable flag and continue
-    with the installation.  LP: #989585.
-
- -- Steve Langasek <steve.langasek@ubuntu.com>  Wed, 02 May 2012 12:51:50 -0700
-
-resolvconf (1.63ubuntu11) precise; urgency=low
-
-  * debian/config: Update regexp toallow multiple DNS servers on a single
-    dns-nameservers line.
-
- -- Stéphane Graber <stgraber@ubuntu.com>  Thu, 29 Mar 2012 16:38:31 -0400
-
-resolvconf (1.63ubuntu10) precise; urgency=low
-
-  * debian/config: handle 'inet6 dhcp' interfaces the same as 'inet dhcp'
-    ones for detecting dynamic DNS information.
-  * bin/list-records, etc/resolvconf/interface-order: cherry-pick upstream
-    support for biosdevname-style interface names.  Thanks, Thomas!
-    LP: #949473.
-  * man/resolvconf.8: point to the right directory for dhcp hooks.
-    LP: #953257.
-
- -- Steve Langasek <steve.langasek@ubuntu.com>  Sat, 17 Mar 2012 12:13:34 -0700
-
-resolvconf (1.63ubuntu9) precise; urgency=low
-
-  * debian/config: dns-nameservers lines are only valid if they take an ipv4
-    or ipv6 value, and earlier bugs in netcfg may spit out lines with garbage
-    values instead.  If we find one of these on initial configuration, don't
-    consider it an example of valid dynamically-provided DNS information.
-    LP: #932275.
-
- -- Steve Langasek <steve.langasek@ubuntu.com>  Fri, 24 Feb 2012 13:01:08 -0800
-
-resolvconf (1.63ubuntu8) precise; urgency=low
-
-  * Use a post-stop script for disabling resolvconf, not a pre-stop script,
-    since upstart seems to be silently ignoring pre-stop when there's no
-    main process.  LP: #933566.
-  * debian/postinst: mkdir -p /run/resolvconf/interface again, just in case
-    there's been a reboot between the preinst and postinst which would wipe
-    out /run.  May or may not address LP 933035.
-  * debian/config, debian/templates, debian/postinst: if we don't know that
-    /etc/resolv.conf was being dynamically managed before install (in at
-    least some cases), link the original contents of /etc/resolv.conf to
-    /etc/resolvconf/resolv.conf.d/tail so that any statically configured
-    nameservers aren't lost.  LP: #923685.    
-  * when called with --enable-updates, ignore failures from the hooks.
-    LP: #927803.
-
- -- Steve Langasek <steve.langasek@ubuntu.com>  Mon, 20 Feb 2012 19:17:32 +0000
-
-resolvconf (1.63ubuntu7) precise; urgency=low
-
-  [ Stéphane Graber ]
-  * Revert change from 1.63ubuntu5 where /etc/resolv.conf would be linkified
-    by the upstart/sysvinit job. This wasn't working as / wasn't necessarily
-    writable at the time.
-    Instead, make the link at package install time but make it a relative
-    link which should take care of the chroot usecase where you want
-    to copy /etc/resolv.conf from outside the chroot into the chroot.
-    Detect old flag file (/var/lib/resolvconf/convert) and re-run the
-    conversion code if it's present (to try and fix broken systems).
-    Use readlink -m when checking the link's destination.
-    (LP: #924836)
-
-  [ Steve Langasek ]
-  * Use readlink -m also in the postrm, to account for our relative links
-
- -- Stéphane Graber <stgraber@ubuntu.com>  Thu, 02 Feb 2012 14:28:45 -0500
-
-resolvconf (1.63ubuntu6) precise; urgency=low
-
-  * Pre-Depend on the /run-providing version of initscripts instead of
-    depending, so that the preinst does the right thing when creating
-    /run/resolvconf/interfaces instead of getting clobbered later by a bind
-    mount on initscripts upgrade.  LP: #922491.
-  * Completely drop the standard_run_subdirs_created helper function from
-    debian/postinst, since it serves no purpose here.
-
- -- Steve Langasek <steve.langasek@ubuntu.com>  Fri, 27 Jan 2012 14:14:53 -0800
-
-resolvconf (1.63ubuntu5) precise; urgency=low
-  [ Stéphane Graber ]
-  * Instead of creating the symlink in debian/postinst, create a flag
-    at /var/lib/resolvconf/convert and create the symlink in the upstart
-    or sysvinit job. On regular machines this will convert it immediately
-    but on chroots that'll keep the old resolv.conf file. (LP: #922578)
-
-  [ Steve Langasek ]
-  * Call dh_installinit with -r, to not stop/start resolvconf on upgrade;
-    that just leaves a window when updates aren't happening, which doesn't
-    benefit us.
-
- -- Stéphane Graber <stgraber@ubuntu.com>  Fri, 27 Jan 2012 14:19:22 -0500
-
-resolvconf (1.63ubuntu4) precise; urgency=low
-
-  * dhclient hook: Only trigger if /etc/resolv.conf is a symlink.
-  * postinst: Set resolvconf/linkify-resolvconf to false after initial
-    conversion, ensuring upgrades won't convert /etc/resolv.conf to
-    a symlink if the user manually converted it back to plain text.
-    (LP: #922677)
-  * Make resolvconf exit 0 when /etc/resolv.conf isn't a symlink
-    (instead of exit 1) and update the error message.
-
- -- Stéphane Graber <stgraber@ubuntu.com>  Fri, 27 Jan 2012 12:23:34 -0500
-
-resolvconf (1.63ubuntu3) precise; urgency=low
-
-  * Move the #DEBHELPER# token in debian/postinst to after the resolv.conf
-    symlink is set, so the init script can actually start (since it expects
-    /etc/resolv.conf to be a symlink).
-
- -- Mathieu Trudel-Lapierre <mathieu-tl@ubuntu.com>  Sun, 08 Jan 2012 21:12:34 +0100
-
-resolvconf (1.63ubuntu2) precise; urgency=low
-
-  * Adjust the upstart job to run as soon as /run is mounted, instead of
-    right before udev starts.
-  * Fix obfuscated call in upstart job to
-    'resolvconf --create-runtime-directories'; this should mkdir -p directly.
-  * Eliminate all references to /etc/resolvconf/run.  This should all be done
-    directly in /run, there is no reason to support making any of this
-    configurable with a symlink since we already have a versioned dependency
-    on the version of initscripts that introduces the /run transition.
-  * Further reduce the calls to resolvconf in the upstart job, there's no
-    reason to call out to another shell script for a 'touch' command.
-  * Add missing #DEBHELPER# token in debian/postinst, replacing by-hand
-    munging of /etc/rc?.d symlinks.
-  * Correct wrong use of dh_installinit --upstart-only, which is only for
-    upstart jobs that were never init scripts before; and don't pass
-    --noscripts, because we really do want the upstart job run on install.
-
- -- Steve Langasek <steve.langasek@ubuntu.com>  Wed, 04 Jan 2012 15:40:59 -0800
-
-resolvconf (1.63ubuntu1) precise; urgency=low
+resolvconf (1.73) unstable; urgency=low
 
   [ Thomas Hood ]
-  * Debian fixed bugs (LP: #797339, #871058, #471975, #378844, #894417)
-  * Differences from Debian:
-    - /sbin/resolvconf:
-      + Exit if /etc/resolv.conf is not a symlink
-    - debian/rules:
-      + Install upstart script rather than initscript (LP: #366967, #750423)
-    - debian/{pre,post}inst
-      + Migrate (to /run) from /var/run, not from /lib/init/rw.
-      + [0706f28] Remove old Sys V init scripts and symlinks
-  * Thanks to Sander van Grieken for his assistance with this release.
+  * [a55738e] Update README; mention unbound's resolvconf support
+  * [8da8cf7] Move flag file to /var/lib/resolvconf (Closes: #710957)
+  * [e2b2026] Update ja.po. Thanks to Victory. (Closes: #712921)
+  * [d727533] Use init_is_upstart
 
- -- Thomas Hood <jdthood@gmail.com>  Tue, 20 Dec 2011 22:00:00 +0100
+  [ Marco Nenciarini ]
+  * [44f6d68] Canonicalize VCS-* field URI in debian/control
+
+ -- Marco Nenciarini <mnencia@debian.org>  Tue, 02 Jul 2013 17:47:41 +0200
+
+resolvconf (1.72) unstable; urgency=low
+
+  [ Thomas Hood ]
+  * [d3b9390] Fix flag file name in debian/config
+
+ -- Thomas Hood <jdthood@gmail.com>  Wed, 08 May 2013 13:50:30 +0200
+
+resolvconf (1.71) unstable; urgency=low
+
+  [ Thomas Hood ]
+  * [7e4b50a] Accept multiple "dns-nameserver" options in /e/n/i,
+      allowing at most one address per option line. Requires Jessie.
+  * [cd7f88b] Simplify maintainer scripts: no longer handle upgrading
+      from Squeeze; Pre-Depend on Wheezy version of initscripts.
+  * [68654a4] Only linkify once; our memory that we have linkified is
+      the existence of file /etc/resolvconf/do-not-linkify-resolvconf
+      which can of course be created or deleted by the admin. *Do*
+      linkify on dpkg-reconfigure --- same behavior as in Ubuntu but
+      implemented without changing debconf answers.
+  * [27551b1] Add Upstart job file from Ubuntu
+  * [9b72d0e] resolvconf: Remove the *-runtime-directories options
+      which were intended to ease maintenance when the Debian and
+      Ubuntu versions were being maintained together. Now that the
+      Ubuntu package is maintained separately and makes no use of
+      these options, their raison d'être has vanished.  Transfer the
+      underlying code to the initscript and to the Upstart job file.
+  * [9b854f8] if-down.d/resolvconf: Drop workaround for fixed #338348
+  * [27f6103] Remove refs to totd which has been removed from Debian
+  * [06a14e1] Update README
+
+ -- Thomas Hood <jdthood@gmail.com>  Mon, 25 Mar 2013 12:00:00 +0100
+
+resolvconf (1.70) unstable; urgency=low
+
+  [ Thomas Hood ]
+  * [ec06f8d] Add NEWS item about the "bind" update script being
+      disabled (Closes: #697435)
+  * [ec06f8d] Change interface-order such that it more consistently
+      prioritizes IPv6 records over IPv4 records and ifup records over
+      DHCP-client records (Fixes LP#1094345).  N.B., previously
+      "eth0.inet" had lower priority than "eth0.dhclient" had, and now
+      has higher priority. So now a dns-nameservers option in an
+      "inet dhcp" stanza in /etc/network/interfaces can be used to
+      override a bad IPv4 server address coming in via DHCP
+      (Closes: #513445)
+  * [9e26ca4] Drop DM-Upload-Allowed
+  * [0863189] Use ifquery instead of "grep /e/n/i" in
+      debian/config.  Because of need for ifquery, add versioned
+      Dependency on ifupdown. Instigated by debian-devel thread:
+      http://lists.debian.org/debian-devel/2013/01/msg00159.html
+  * [eef5e1c] update.d/libc: Don't restart nscd any more. Nscd's hosts
+      cache was disabled by default in 2007 so this was, by default,
+      an unused feature. Nscd now spontaneously re-reads resolv.conf
+      when it changes, so restarting nscd is no longer necessary.
+      Ref: http://www.eglibc.org/archives/patches/msg00977.html
+      Fixes LP#1110331.  Unfortunately, this change exposes a bug in
+      nscd (http://bugs.debian.org/700385): nscd does not clear its
+      hosts cache when it re-reads resolv.conf.
+  * [f559774] resolvconf.8: Undocument the now-deprecated
+      *-runtime-directories options and mention that static resolver
+      options should be migrated to resolv.conf.d/base.
+  * [396e5b1] resolvconf.8: Remove the statement, no longer true in
+      Jessie, that an option can only be used once per /e/n/i stanza.
+
+ -- Thomas Hood <jdthood@gmail.com>  Wed, 06 Feb 2013 20:00:00 +0100
+
+resolvconf (1.69) unstable; urgency=low
+
+  [ Thomas Hood ]
+  * [276fc24] Bump Standards-Version; no changes required
+  * [6982da6] README: Name packages that clobber /etc/resolv.conf
+  * [4cb082a] README: Update
+  * [044e9a3] ip-up.d/000resolvconf: Do nothing if USEPEERDNS not set
+  * [e0db2cb] Deal with obsolete conf files (Closes: #687507, #681623)
+
+ -- Thomas Hood <jdthood@gmail.com>  Mon, 17 Dec 2012 12:00:00 +0100
+
+resolvconf (1.68) unstable; urgency=low
+
+  [ Thomas Hood ]
+  * [1527598] Add sk.po.  Thanks to Slavko (Closes: #683672)
+  * [7713764] Update resolvconf's ppp hook also to exit when passed
+      /org/freedesktop/NetworkManager/PPP/* (Fixes LP: #994575,
+      LP: #1046154)
+
+ -- Thomas Hood <jdthood@gmail.com>  Mon, 10 Sep 2012 11:46:05 +0200
+
+resolvconf (1.67) unstable; urgency=low
+
+  [ Thomas Hood ]
+  * [5e645ac] Use more conventional name for record created by
+      resolvconf's pppd hook script
+  * [58da88f] Change resolvconf's pppd hook script such that it does
+      not call resolvconf if pppd was run by nm-pptp-service
+      (See LP#994575)
+  * [16b4ae5] Bump Standards-Version; no changes
+
+ -- Thomas Hood <jdthood@gmail.com>  Tue, 19 Jun 2012 13:17:56 +0200
+
+resolvconf (1.66) unstable; urgency=low
+
+  [ Thomas Hood ]
+  * [ed8ab34] Silence lsattr error message in postinst
+  * [23217c3] resolvconf(8): List allowed dns-* interfaces(5) options
+  * [b69c873] and describe more verbosely how the libc update script
+      generates the dynamic resolv.conf file (Fixes LP##990660 and
+      LP#999337). Thanks to Nathan Stratton Treadway.
+  * [aa99b9b] update.d/libc: Only run hook scripts if /etc/resolv.conf
+      is a symbolic link to the updated dynamic file.
+
+ -- Thomas Hood <jdthood@gmail.com>  Fri, 08 Jun 2012 10:26:53 +0200
+
+resolvconf (1.65) unstable; urgency=low
+
+  [ Thomas Hood ]
+  * [3f0a1a1] Create /etc/resolvconf/run and its target and subdir
+      in the postinst as well as in the preinst (Closes: #662724)
+  * [ae16ea8] In postinst, as last resort, create /run/resolvconf/
+       even if /run isn't a tmpfs.
+  * [25711bf] ifupdown hook scripts: Don't return error to ifupdown
+      (Addresses #661591 so far as resolvconf is concerned)
+  * [8da29c3] Document that list-records doesn't list empty records.
+      Add patterns for biosdevnames (See LP#949473)
+  * [a998de3] Update default interface order patterns in list-records
+  * [94baf61] resolvconf(8): Update ref to dhclient hook script
+      (See LP#953257)
+
+ -- Thomas Hood <jdthood@gmail.com>  Tue, 13 Mar 2012 09:09:35 +0100
+
+resolvconf (1.64) unstable; urgency=low
+
+  [ Thomas Hood ]
+  * [da2bfa4] Wipe more selectively (Closes: #657259)
+  * [e5fbaef] Ubuntu backport: on enable-updates, exit with nonzero
+      status if and only if updates could not be enabled (i.e.,
+      ignore update script errors).
+  * [e1cb96e] Bump Standards-Version
+
+ -- Marco Nenciarini <mnencia@debian.org>  Sun, 04 Mar 2012 17:44:13 +0100
 
 resolvconf (1.63) unstable; urgency=low
 
   [ Thomas Hood ]
   * [a83fce3] Depend on a later version of the initscripts package
   * [cfc8349] Use variable instead of hard-coded path for old run dir
-    in maintainer scripts, to help shrink the Ubuntu diff.
+      in maintainer scripts, to help shrink the Ubuntu diff.
   * [9921902] Update and improve resolvconf(8)
   * [719dc9b] Run update on boot (Closes: #651801, #651827)
   * [5fc985c] Don't trigger on reconfigure (Closes: #651803)
@@ -209,30 +224,31 @@ resolvconf (1.63) unstable; urgency=low
 resolvconf (1.62) unstable; urgency=low
 
   [ Thomas Hood ]
-  * [0352a85] postrm: On removal restore original resolv.conf if current
-    (dynamic) resolv.conf has no content. (Closes: #644956)
-    Thanks to Josep Lladonosa Capell.
+  * [0352a85] postrm: On removal restore original resolv.conf if
+      current (dynamic) resolv.conf has no content. (Closes: #644956)
+      Thanks to Josep Lladonosa Capell.
   * [7cdfa73] Move logic details from initscript to /sbin/resolvconf;
-    for this purpose add new options to /sbin/resolvconf:
-    --enable-updates, --disable-updates, --updates-are-enabled,
-    --create-runtime-directories.
+      for this purpose add new options to /sbin/resolvconf:
+      --enable-updates, --disable-updates, --updates-are-enabled,
+      --create-runtime-directories.
   * [7cdfa73] Eliminate "-i" option supplied to update scripts and
-    the code in /etc/resolvconf/update.d/libc that made use of this.
+      the code in /etc/resolvconf/update.d/libc that made use of this.
 
   [ Marco Nenciarini ]
   * [e175b76] Remove hardcoded path from resolvconf's invocation in
-    maintainer scripts. Thanks to lintian
+      maintainer scripts. Thanks to lintian
 
  -- Marco Nenciarini <mnencia@debian.org>  Wed, 30 Nov 2011 19:05:04 +0100
 
 resolvconf (1.61) unstable; urgency=low
 
-  * [cbb5105] list-records: Add comment re: extglob; speed up final loop
-  * [4492943] Eliminate bashisms from /sbin/resolvconf. (Other scripts in this
-    package still use bash, though, so this does not close wish #519364.)
-    Thanks to Stefan Monnier
-  * [63da54b] update.d/libc: Only run-parts update-libc.d/ if the latter exists.
-    (Closes: #642965)
+  * [cbb5105] list-records: Add comment re: extglob; speed up final
+      loop
+  * [4492943] Eliminate bashisms from /sbin/resolvconf. (Other
+      scripts in this package still use bash, though, so this does not
+      close wish #519364.) Thanks to Stefan Monnier.
+  * [63da54b] update.d/libc: Only run-parts update-libc.d/ if the
+      latter exists.  (Closes: #642965)
 
  -- Thomas Hood <jdthood@gmail.com>  Mon, 26 Sep 2011 09:42:11 +0200
 
@@ -241,14 +257,14 @@ resolvconf (1.60) unstable; urgency=low
   [ Marco Nenciarini ]
   * [c30024e] Switch vcs fields to git
   * [4041409] Add debian/gbp.conf to make easy the usage of
-    git-buildpackage
+      git-buildpackage
 
   [ Thomas Hood ]
   * [18e2fac] Update es.po thanks to Javier Fernández-Sanguino
-    (Closes: #642360)
+      (Closes: #642360)
   * [18e2fac] Include resolv.conf.d/base information in
-    resolv.conf *after* dynamic information, rather than before
-    (Closes: #642222)
+      resolv.conf *after* dynamic information, rather than before
+      (Closes: #642222)
 
  -- Marco Nenciarini <mnencia@debian.org>  Fri, 23 Sep 2011 09:31:53 +0200
 
@@ -453,24 +469,6 @@ resolvconf (1.49) experimental; urgency=low
 
  -- Marco Nenciarini <mnencia@debian.org>  Tue, 19 Apr 2011 22:30:30 +0200
 
-resolvconf (1.48ubuntu1) natty; urgency=low
-
-  * Merge from debian unstable. Remaining changes:
-    - bin/resolvconf:
-      + fail with non-zero exit code when /etc/resolv.conf is not a symlink.
-    - debian/postinst:
-      + use default /var/run.
-      + make sure all run files are sent to /var/run, not /lib/init/rw
-      + update regex to check that /var/run is a tmpfs (LP: #386822)
-      + fix typo in comments
-    - debian/rules:
-      + don't install the init script in runlevels 0 and 6.
-    - debian/postrm:
-      + remove /var/run/resolvconf, not /lib/init/rw/resolvconf
-      + also purge /var/run/resolvconf/interface
-
- -- Bhavani Shankar <bhavi@ubuntu.com>  Thu, 13 Jan 2011 19:22:32 +0530
-
 resolvconf (1.48) unstable; urgency=low
 
   [ Thomas Hood ]
@@ -486,24 +484,6 @@ resolvconf (1.48) unstable; urgency=low
 
  -- Marco Nenciarini <mnencia@debian.org>  Wed, 12 Jan 2011 20:15:47 +0100
 
-resolvconf (1.47ubuntu1) natty; urgency=low
-
-  * Merge from debian unstable.  Remaining changes:
-    - bin/resolvconf:
-      + fail with non-zero exit code when /etc/resolv.conf is not a symlink.
-    - debian/postinst:
-      + use default /var/run.
-      + make sure all run files are sent to /var/run, not /lib/init/rw
-      + update regex to check that /var/run is a tmpfs (LP: #386822)
-      + fix typo in comments
-    - debian/rules:
-      + don't install the init script in runlevels 0 and 6.
-    - debian/postrm:
-      + remove /var/run/resolvconf, not /lib/init/rw/resolvconf
-      + also purge /var/run/resolvconf/interface
-
- -- Bhavani Shankar <bhavi@ubuntu.com>  Sat, 04 Dec 2010 00:54:18 +0530
-
 resolvconf (1.47) unstable; urgency=low
 
   [ Thomas Hood ]
@@ -514,24 +494,6 @@ resolvconf (1.47) unstable; urgency=low
   * Bump Standards-Version to 3.9.1.0; no changes required
 
  -- Marco Nenciarini <mnencia@debian.org>  Wed, 01 Dec 2010 16:21:54 +0100
-
-resolvconf (1.46ubuntu1) maverick; urgency=low
-
-  * Merge from debian unstable (LP: #605116), remaining changes:
-    - bin/resolvconf:
-      + fail with non-zero exit code when /etc/resolv.conf is not a symlink.
-    - debian/postinst:
-      + use default /var/run.
-      + make sure all run files are sent to /var/run, not /lib/init/rw
-      + update regex to check that /var/run is a tmpfs (LP: #386822)
-      + fix typo in comments
-    - debian/rules:
-      + don't install the init script in runlevels 0 and 6.
-    - debian/postrm:
-      + remove /var/run/resolvconf, not /lib/init/rw/resolvconf
-      + also purge /var/run/resolvconf/interface
-
- -- Lorenzo De Liso <blackz@ubuntu.com>  Tue, 13 Jul 2010 19:35:38 +0200
 
 resolvconf (1.46) unstable; urgency=low
 
@@ -563,25 +525,6 @@ resolvconf (1.46) unstable; urgency=low
 
  -- Marco Nenciarini <mnencia@debian.org>  Mon, 12 Jul 2010 12:41:37 +0200
 
-resolvconf (1.45ubuntu1) lucid; urgency=low
-
-  * Merge from debian unstable, remaining changes (LP: #495998):
-    - bin/resolvconf:
-      + fail with non-zero exit code when /etc/resolv.conf is not a symlink.
-    - debian/postinst:
-      + use default /var/run.
-    - debian/rules:
-      + don't install the init script in runlevels 0 and 6.
-  * debian/postinst:
-    - make sure all run files are sent to /var/run, not /lib/init/rw
-    - update regex to check that /var/run is a tmpfs (LP: #386822)
-    - fix typo in comments
-  * debian/postrm:
-    - remove /var/run/resolvconf, not /lib/init/rw/resolvconf
-    - also purge /var/run/resolvconf/interface
-
- -- Mathieu Trudel <mathieu-tl@ubuntu.com>  Wed, 30 Dec 2009 16:17:58 -0500
-
 resolvconf (1.45) unstable; urgency=low
 
   [ Thomas Hood ]
@@ -591,18 +534,6 @@ resolvconf (1.45) unstable; urgency=low
   * Add eu.po (Closes: #534558)
 
  -- Marco Nenciarini <mnencia@debian.org>  Thu, 13 Aug 2009 20:01:51 +0200
-
-resolvconf (1.44ubuntu1) karmic; urgency=low
-
-  * Merge from debian unstable, remaining changes (LP: #384131):
-    - bin/resolvconf: 
-      + fail with non-zero exit code when /etc/resolv.conf is not a symlink.
-    - debian/postinst:
-      + use default /var/run.
-    - debian/rules:
-      + don't install the init script in runlevels 0 and 6.
-
- -- Nick Ellery <nick.ellery@ubuntu.com>  Thu, 04 Jun 2009 16:38:43 -0700
 
 resolvconf (1.44) unstable; urgency=low
 
@@ -622,18 +553,6 @@ resolvconf (1.44) unstable; urgency=low
 
  -- Daniel Kahn Gillmor <dkg@fifthhorseman.net>  Tue, 02 Jun 2009 18:02:23 -0400
 
-resolvconf (1.43ubuntu1) jaunty; urgency=low
-
-  * Merge from debian unstable, remaining changes (LP: #306092):
-    - bin/resolvconf: 
-      + fail with non-zero exit code when /etc/resolv.conf is not a symlink.
-    - debian/postinst:
-      + use default /var/run.
-    - debian/rules:
-      + don't install the init script in runlevels 0 and 6.
-
- -- Nick Ellery <nick.ellery@ubuntu.com>  Sun, 07 Dec 2008 15:12:34 -0800
-
 resolvconf (1.43) unstable; urgency=low
 
   [ Thomas Hood ]
@@ -649,27 +568,6 @@ resolvconf (1.43) unstable; urgency=low
 
  -- Marco Nenciarini <mnencia@debian.org>  Sat, 06 Dec 2008 10:17:36 +0100
 
-resolvconf (1.42ubuntu2) intrepid; urgency=low
-
-  * bin/resolvconf: fail with non-zero exit code when /etc/resolv.conf is not
-    a symlink. This allows network-manager to recognize such an error and
-    fallback to default behaviour when resolvconf is installed, but is not
-    used.
-
- -- Alexander Sack <asac@ubuntu.com>  Wed, 10 Sep 2008 10:08:56 +0200
-
-resolvconf (1.42ubuntu1) intrepid; urgency=low
-
-  * Merge from debian unstable, remaining changes:
-   + debian/postinst:
-    - use default /var/run.
-   + debian/rules: 
-    - don't install the init script in runlevels 0 and 6
-   + debian/control:
-    - Update Standards-Version.
-
- -- Emanuele Gentili <emgent@ubuntu.com>  Wed, 20 Aug 2008 02:32:47 +0200
-
 resolvconf (1.42) unstable; urgency=high
 
   [ Thomas Hood ]
@@ -680,14 +578,6 @@ resolvconf (1.42) unstable; urgency=high
   * Swedish (Closes: #491780)
 
  -- Thomas Hood <jdthood@yahoo.co.uk>  Sun, 03 Aug 2008 21:27:56 +0200
-
-resolvconf (1.41ubuntu1) intrepid; urgency=low
-
-  * Merge from Debian unstable. Remaining Ubuntu changes: (LP: #241328)
-   + debian/postinst: use default /var/run.
-   + Update maintainer field in debian/control.
-
- -- Emanuele Gentili <emgent@ubuntu.com>  Thu, 19 Jun 2008 16:26:51 +0200
 
 resolvconf (1.41) unstable; urgency=low
 
@@ -710,14 +600,6 @@ resolvconf (1.41) unstable; urgency=low
   * debian/control: added Dm-Upload-Allowed: yes
 
  -- Daniel Kahn Gillmor <dkg-debian.org@fifthhorseman.net>  Tue, 17 Jun 2008 16:51:15 -0400
-
-resolvconf (1.40ubuntu1) intrepid; urgency=low
-
-  * Merge from debian unstable, Ubuntu remaining changes (LP: #226679):
-   + debian/postinst: use default /var/run.
-   + Update maintainer field in debian/control. 
-
- -- Emanuele Gentili <emgent@emanuele-gentili.com>  Mon, 05 May 2008 00:23:04 +0200
 
 resolvconf (1.40) unstable; urgency=low
 
@@ -773,14 +655,6 @@ resolvconf (1.39) unstable; urgency=low
 
  -- Marco Nenciarini <mnencia@debian.org>  Thu, 13 Mar 2008 12:48:18 +0100
 
-resolvconf (1.38ubuntu1) hardy; urgency=low
-
-  * Merge from debian unstable, remaining changes (LP: #182433):
-    - use /var/run instead of /dev/shm
-    - debian/rules: don't install the init script in runlevels 0 and 6
-
- -- Emanuele Gentili <emgent@emanuele-gentili.com>  Sun, 13 Jan 2008 01:36:43 +0100
-
 resolvconf (1.38) unstable; urgency=low
 
   [ Thomas Hood ]
@@ -799,14 +673,6 @@ resolvconf (1.38) unstable; urgency=low
 
  -- Thomas Hood <jdthood@yahoo.co.uk>  Tue, 31 Dec 2007 12:00:00 +0100
 
-resolvconf (1.37ubuntu1) feisty; urgency=low
-
-  * Merge from debian unstable, remaining changes:
-    - use /var/run instead of /dev/shm
-    - debian/rules: don't install the init script in runlevels 0 and 6
-
- -- Michael Bienia <geser@ubuntu.com>  Tue, 19 Dec 2006 14:19:02 +0100
-
 resolvconf (1.37) unstable; urgency=high
 
   [ Thomas Hood ]
@@ -820,20 +686,6 @@ resolvconf (1.37) unstable; urgency=high
   * Urgency set to high due to RC bug fix.
 
  -- Marco Nenciarini <mnencia@debian.org>  Wed, 13 Dec 2006 15:13:02 +0100
-
-resolvconf (1.36ubuntu1) edgy; urgency=low
-
-  [ William Alexander Grant ]
-  * Readded patch to use /var/run rather than /dev/shm (it was lost in a sync
-    a while back)
-  (Closes Ubuntu: #61310).
-
-  [ Daniel T. Chen ]
-  * debian/rules: Follow multiuser semantics for dh_installinit(1) --
-    that is, we don't need to save anything for runlevels 0 or 6, so
-    don't create those symlinks.
-
- -- Daniel T Chen <crimsun@ubuntu.com>  Wed, 20 Sep 2006 03:12:20 -0400
 
 resolvconf (1.36) unstable; urgency=low
 
@@ -1638,4 +1490,3 @@ resolvconf (0.38) experimental; urgency=low
   * Initial Debian release. Closes: #204677
 
  -- Thomas Hood <jdthood@yahoo.co.uk>  Wed, 27 Aug 2003 17:53:54 -0100
-

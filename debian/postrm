@@ -18,8 +18,9 @@ is_installed() {
 
 case "$1" in
   remove)
-	if [ -L /etc/resolv.conf ] \
-	   && [ "$(readlink -m /etc/resolv.conf)" = "/run/resolvconf/resolv.conf" ]
+	if
+		[ -L /etc/resolv.conf ] \
+		&& [ "$(readlink /etc/resolv.conf)" = "/run/resolvconf/resolv.conf" ]
 	then
 		# /etc/resolv.conf is a resolvconf symlink
 
@@ -51,6 +52,8 @@ case "$1" in
 		fi
 	fi
 
+	rm -f /var/lib/resolvconf/linkified
+
 	report_info "Reboot recommended"
 	db_input high resolvconf/reboot-recommended-after-removal || :
 	db_go || :
@@ -75,11 +78,14 @@ case "$1" in
 	#
 	rm -f /etc/resolvconf/resolv.conf.d/tail
 	rm -f /etc/resolvconf/resolv.conf.d/original
-	rm -f /etc/resolvconf/update.d/bind  # Old conffile
+	rm -f /etc/resolvconf/update.d/bind
+	rm -f /etc/resolvconf/update.d/bind.dpkg-old
 	rm -f /etc/default/resolvconf
 	rm -f /etc/dhcp3/dhclient-enter-hooks.d/resolvconf
+	rm -f /etc/init.d/resolvconf.dpkg-old
+	rm -f /etc/resolv.conf.dpkg-old
+	rm -rf "/lib/init/rw/resolvconf" || :
 	rm -rf /run/resolvconf || :
-	rm -rf /etc/init.d/resolvconf.dpkg-old
 	;;
   # disappear|upgrade)
 	# Don't do anything on upgrade

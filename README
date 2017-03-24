@@ -20,7 +20,7 @@ Credits
 
 News
 ~~~~
-* Last updated 22 September 2011 for version 1.60
+* Last updated 8 May 2014 for version 1.75
 
 Introduction
 ~~~~~~~~~~~~
@@ -75,7 +75,8 @@ totd (5)
     but SFAICT are effectively no-ops if resolvconf is installed.  Hard
     to tell.  Postinst does things to /etc/resolv.conf and also rewrites
     dhclient_enter_hooks in a way incompatible with resolvconf.  As of
-    1.4-4 totd plays nicely with resolvconf.
+    1.4-4 totd plays nicely with resolvconf. As of Wheezy, totd is gone
+    from Debian.
 dhcp-client (4005)
     Prior to version 2.0pl5-17, overwrites resolv.conf without making a
     backup.
@@ -118,6 +119,9 @@ laptop-net (42)
 Several other packages recommend to the user that scripts be written to alter
 or replace resolv.conf.
 
+Third-party software packages also futz with /etc/resolv.conf. Among them
+are the Cisco AnyConnect, Juniper AnyConnect and FortiClient SSL VPN clients.
+
 These packages do not cooperate; they simply overwrite one another's changes.
 Even those that back up and restore the file will corrupt it if interfaces are
 brought up and down in other than a LIFO order.  Few of them support the use
@@ -138,11 +142,11 @@ meaning "with some manual configuration"):
 
 DNS caches:
 
-   bind9(*), djbdns dnscache, dnsmasq, nscd, pdnsd, totd
+   bind9(*), djbdns dnscache, dnsmasq, nscd, pdnsd
 
 DNS recursing nameservers:
 
-   bind9(*), pdns-recursor(*)
+   bind9(*), pdns-recursor(*), unbound
 
 and with any program that uses a DNS client library that consults
 /etc/resolv.conf to obtain its list of nameservers:
@@ -199,21 +203,19 @@ configuration.
     * For each inet static logical interface through which a nameserver is
       accessible, add lines like the following to /etc/network/interfaces .
 
-          dns-nameservers 11.22.33.44 55.66.77.88
+          dns-nameserver 11.22.33.44
+          dns-nameserver 55.66.77.88
           dns-search foo.org bar.com
 
-      Other recognized option words are 'dns-domain' and 'dns-sortlist'.
-      These option names correspond to the option names used in the
-      resolv.conf file with one exception: whereas one lists several
-      nameserver addresses in /etc/resolv.conf on several "nameserver"
-      lines, here one should list them all on a single "dns-nameservers"
-      line.  See resolv.conf(5) for more information.  The lines entered
+      The option "dns-sortlist" is also available but rarely used.  These
+      option names correspond to the option names used in the resolv.conf
+      file. See resolv.conf(5) for more information.  The lines entered
       in /etc/network/interfaces will be added to the resolver
       configuration file (without the "dns-" prefix, of course) when a
       physical interface is brought up as that logical interface.
       Note that the resolver configuration is updated AFTER all the "up"
       commands have been run; therefore "up" commands cannot make use of
-      nameservers listed on "dns-nameservers" lines in the same logical
+      nameservers listed on "dns-nameserver" lines in the same logical
       interface stanza.  Changing this will require modifying ifupdown
       so that it talks to resolvconf; currently resolvconf hooks into
       ifupdown using the script /etc/network/if-up.d/000resolvconf. Note
@@ -232,7 +234,7 @@ configuration.
       /usr/share/doc/resolvconf/resolvconf-update-bind.
 4. Install the resolvconf package if you have not already done so.
    If you have already done so then consider dpkg-reconfigure'ing it.
-   Agree to symlink /etc/resolv.conf to /run/resolvconf/resolv.conf.
+   Agree to symlink /etc/resolv.conf to /etc/resolvconf/run/resolv.conf.
    You can decline the offer to append the original static resolver
    configuration file to the end of the dynamically generated resolver
    configuration file because you have already modified
@@ -240,10 +242,10 @@ configuration.
 5. Reboot
 6. Check /etc/resolv.conf to make sure that its contents make sense.
 
-If /etc/resolv.conf is not symlinked to /run/resolvconf/resolv.conf then
+If /etc/resolv.conf is not symlinked to /etc/resolvconf/run/resolv.conf then
 a warning message will be printed when /sbin/resolvconf is run.  If you want
 to keep resolvconf installed but for some reason do not want /etc/resolv.conf
-to be symlinked to /run/resolvconf/resolv.conf then you can disable the
+to be symlinked to /etc/resolvconf/run/resolv.conf then you can disable the
 warning message by setting REPORT_ABSENT_SYMLINK=no in
 /etc/default/resolvconf.
 
@@ -322,14 +324,12 @@ Technical overview
       'search x.y.z' then the resulting file will have
       'search a.b.c x.y.z'.
   + run/
-    Directory where run time files are stored.  This can be replaced by
-    a symlink if the admin so desires.  Standardly this is a symlink to
-    /run/resolvconf/.
+    Symbolic link to /run/resolvconf/
   + update.d/
     Scripts to run when nameserver information is updated
   + update-libc.d/
     Scripts to run when the resolv.conf file changes
-* Symlink /etc/resolv.conf -> /run/resolvconf/resolv.conf
+* Symlink /etc/resolv.conf -> /etc/resolvconf/run/resolv.conf
 * Configurers of interfaces call /sbin/resolvconf to provide
   resolv.conf-like information after the interface is brought up.  They
   call it again to delete the information when the interface is brought
@@ -338,8 +338,8 @@ Technical overview
 * "/etc/init.d/resolvconf reload" calls scripts in
   /etc/resolvconf/update.d/ which update DNS cache configuration file
   fragments, reload daemons and regenerate /etc/resolv.conf.  If
-  the latter has changed then nscd is restarted and scripts in
-  /etc/resolvconf/update-libc.d/ are run.
+  the latter has changed then scripts in /etc/resolvconf/update-libc.d/
+  are run.
 
 Usage information for developers
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -390,36 +390,42 @@ is updated could likewise employ a script in /etc/resolvconf/update.d/ .
 
 Usage information for maintainers
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Normally, when the resolvconf package is installed the resolvconf program
-takes control of /etc/resolv.conf.  It derives the contents of that file from
-nameserver information that has been sent to it, as described above.
+Normally, when the resolvconf package is first installed the resolvconf
+program takes control of /etc/resolv.conf: it writes the file
+/run/resolvconf/resolv.conf to which /etc/resolv.conf is a symbolic link.
+Resolvconf derives the contents of that file from nameserver information
+that has been sent to it by other programs, as described above.
 
-Resolvconf is not part of the base system.  It is generally installed after
-the system has fully booted.  At that point interface configurers have already
-configured interfaces and obtained nameserver information.  Caching
-nameservers may also have started.  Because resolvconf is installed only
-later, the latter programs have (obviously) not sent their nameserver
-information to resolvconf.  This means that after installation resolvconf
-does not have complete nameserver information.  The most reliable solution to
-this problem is to reboot.  But Debian rightly frowns on requirements to
-reboot, so the resolvconf package has been so designed that it partially
-addresses the problem just mentioned, as described below.  In the future the
-problem may be fully solved, but this will require the cooperation of other
-Debian package maintainers.
+Resolvconf is not part of the base system in Debian; it is generally
+installed on a Debian system after the system has fully booted.  At that point
+interface configurers have already configured the machine's network interfaces
+and obtained nameserver information.  A local forwarding nameserver may also
+have started.  Because resolvconf is installed only later, the latter programs
+have not sent their nameserver information to resolvconf.  This means that
+after installation resolvconf does not have complete nameserver information.
+The most reliable solution to this problem is to reboot.  After reboot, all
+other programs detect resolvconf's presence when they start or configure
+interfaces and send their information to resolvconf and/or obtain their
+nameserver information from resolvconf.  But Debian rightly discourages
+requiring the administrator to reboot, so the resolvconf package has been so
+designed that it partially addresses the problem just outlined, in the manner
+described below.  (In the future the problem may be fully solved, but this
+will require the cooperation of other Debian package maintainers.  This is
+less of a problem in Ubuntu, where resolvconf is part of the base system.)
 
 In order partially to address the problem of resolvconf having incomplete
 information after installation until the first reboot, resolvconf includes
 the entire contents of the original (i.e., pre-resolvconf-installation)
-resolv.conf in its database.  Consequently, nameserver addresses are not lost
-when resolvconf is installed.  Unfortunately this also means that those
-addresses are not removed when interfaces are brought down.
+resolv.conf in its runtime database.  Consequently, nameserver addresses are
+not lost when resolvconf is installed.  Unfortunately this also means that
+those addresses are not removed when interfaces are brought down.
 
-Another way the resolvconf package addresses the problem is to allow other
-parties to call /sbin/resolvconf as soon as it appears in the filesystem:
-nameserver information can be registered with resolvconf before the
-resolvconf's postinst runs.  This means that when, for example, dnsmasq and
-resolvconf are installed in the same dpkg run, and dnsmasq happens to be
-configured first, dnsmasq can still successfully register its nameserver
+Another way that the resolvconf package helps to address the problem is to
+allow other parties to call /sbin/resolvconf as soon as it appears in the
+filesystem: nameserver information can be registered with resolvconf before
+the resolvconf's postinst runs.  This means that when, for example, dnsmasq
+and resolvconf are installed in the same dpkg run, and dnsmasq happens to be
+configured first, dnsmasq will still successfully register its nameserver
 address with resolvconf.
 
 The correct and complete way to solve the problem is for all suppliers of
@@ -432,8 +438,7 @@ include a hook script /usr/lib/resolvconf/dpkg-event.d/foo which, when called
 with the argument "install", takes whatever actions are necessary to cause the
 program(s) in foo to supply their nameserver information to resolvconf; and
 when called with the argument "remove" takes whatever actions are appropriate
-given that the resolvconf package has been removed (and, in being removed, may
-have removed foo's nameserver information).
+given that the resolvconf package has been removed.
 
 The hook script thus has the following form.
 
@@ -481,6 +486,30 @@ and must have the same name as the package that owns it.
 Arguments other than "install" and "remove" are reserved for future use and
 must be silently ignored.
 
+When the resolvconf package is installed it performs configuration actions
+that are governed by the following two debconf settings.
+
+1. resolvconf/linkify-resolvconf
+
+When this is true, the package makes a single attempt to create a symbolic
+link /etc/resolv.conf with target ../run/resolvconf/resolv.conf (Ubuntu) or
+/etc/resolvconf/run/resolv.conf (Debian). (N.B. In both Ubuntu and Debian
+this points ultimately to /run/resolvconf/resolv.conf .)
+
+2. resolvconf/link-tail-to-original
+
+When this is true, the package makes a single attempt to create a symbolic
+link /etc/resolvconf/resolv.conf.d/tail -> original. The purpose of this is
+to cause original nameserver configuration to be included in the dynamic
+resolv.conf even after reboot.
+
+In either case, after making the single attempt the package postinst writes
+a flag file /var/lib/resolvconf/linkified whose presence causes the postinst
+not to make another attempt to create either symlink. However, the command
+"dpkg-reconfigure resolvconf" ignores the flag and causes the package to
+attempt once again to create each symlink if the corresponding debconf
+setting is true.
+
 Usage information for administrators
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 The generation of the resolv.conf file can be controlled by editing the
@@ -498,12 +527,12 @@ Once you have installed resolvconf properly you don't normally need to run
 /sbin/resolvconf from the command line.  However, I once encountered a
 situation in which I did that.  Perhaps it is a useful illustration.  My ISP's
 nameserver went down and thus my caching nameserver could not resolve names.
-I knew of another host belonging to by ISP that I could use so I simply did:
+I knew of another host belonging to my ISP that I could use so I simply did:
 
     # echo "nameserver ww.xx.yy.zz" | resolvconf -a dummy
 
-This added the necessary nameserver line to /etc/resolv.conf and to dnsmasq's
-nameserver list.  When my ISP's regular nameserver was fixed I did:
+This added the necessary nameserver line to dnsmasq's nameserver list.  When
+my ISP's regular nameserver was fixed I did:
 
     # resolvconf -d dummy
 
@@ -516,21 +545,14 @@ A. Debian's update-* commands are mostly maintainer programs that update
    static configuration files in /etc/.  Mostly they run at package
    install time.  Resolvconf, in contrast, is a run-time configurer.
 
-Q. Why use 'dns-nameservers' instead of 'dns-nameserver' as the option
-   name in /etc/network/interfaces?
-A. Because 'dns-nameservers' can take several address arguments whereas
-   the 'nameserver' line in /etc/resolv.conf can take only a single
-   argument, and because there can be only one instance of any given
-   option in a logical interface definition.
-
 TODO
 ~~~~
   * bind9
-    # 483098: bind9: Please switch default to using resolvconf generated
-      file if resolvconf is installed
-      - NO REPLY for several months
+    # 483098: bind9: Please add resolvconf hook script to update
+      forwarders list
+      - NO REPLY for over a year
     # 641714: Please add resolvconf packaging-event hook script
-      - NO REPLY for several months
+      - NO REPLY for over a year
   * dnscache-run (from djbdns)
     # 582755: Add resolvconf support
       - NO REPLY for several years
@@ -540,10 +562,16 @@ TODO
         with resolvconf
   * gnome-system-tools
     # 258553: Incompatible with resolvconf
-      - OKed by maintainer but NO ACTION has been taken for several years
+      - NO ACTION for several years
   * ifupdown
     + Handle dns-* commands natively so that the resolver is configured
       before "up" commands are run
+  * isc-dhcp-client
+    # 700966: Please add resolvconf packaging-event hook script
+      - SUBMITTED
+  * kppp
+    # 695121; LP#1086336: Writes to /etc/resolvconf
+      - SUBMITTED
   * libadns1
     + It consults resolv.conf so it should already be supported.
       However, someone should test it.
@@ -574,13 +602,19 @@ TODO
     + Someone should investigate whether it could be supported better.
   * network-manager
     # 639803: Please add resolvconf packaging-event hook script
-      - NO REPLY
+      - NO REPLY for over a year
   * nscd
     # 266817: Please suggest resolvconf
       - Tagged WONTFIX
+    # 700385: Invalidate hosts cache on resolv.conf change, or
+              include resolvconf update script to invalidate it
+      - SUBMITTED
+  * pdns-recursor
+    # 700850: Please add resolvconf packaging-event hook script
+      - SUBMITTED
   * pdnsd
-    # 628846: Include /usr/lib/resolvconf/dpkg-event.d/pdnsd
-      - NO REPLY
+    # 628846: Please add resolvconf packaging-event hook script
+      - NO REPLY for over a year
   * ppp
     # 208095: Please suggest resolvconf
       - Tagged WONTFIX
@@ -600,6 +634,7 @@ DONE
   * bind
     + Drop support for this obsolete version of BIND
       - DONE in resolvconf 1.48
+      - bind is now gone from Debian
   * bind9
     + Create script /etc/resolvconf/update.d/bind to:
       . Convert /etc/bind/named.options.sed into /var/run/bind/named.options
@@ -634,8 +669,10 @@ DONE
       - DONE in 1.13-2
     + Include /etc/resolvconf/update.d/dnsmasq
       - DONE in 1.13-3
-    # 628003, #641717: Include /usr/lib/resolvconf/dpkg-event.d/dnsmasq
+    # 628003, #641717: Add resolvconf packaging-event hook script
       - DONE in 2.58-3
+    # 716908: Apply patch to use "--after" option
+      - SUBMITTED
   * fetchmail
     + Use resolvconf to trigger restart on change of nameserver info
       - DONE in 6.2.5-4
@@ -645,9 +682,6 @@ DONE
   * laptop-net
     + Use resolvconf instead of overwriting /etc/resolv.conf .
       - DONE in 2.21-1
-  * nscd
-    # 252251: Please add resolvconf support
-      - DONE in resolvconf 1.15
   * pcmcia-cs
     # 212823: pcmcia-cs: please add support for the resolvconf package
       - DONE in 3.2.5-1
@@ -689,6 +723,11 @@ DONE
   * udhcpc
     # 302019: Please use resolvconf
       - DONE in 0.9.8cvs20050124-3
+  * unbound
+    # 562031: Pleage tell resolvconf about unbound on localhost
+      - DONE in 1.4.9-1
+    # 567879: Please add resolvconf integration
+      - DONE in 1.4.9-1
   * webmin-core
     # 223483: Please play nicely with resolvconf
       - DONE in 1.150-2
@@ -699,15 +738,20 @@ DONE
 Credits
 ~~~~~~~
 The basic idea for resolvconf was expressed by Emile van Bergen on the
-debian-devel mailing list. I claim any braindamage in the implementation as
-my own.
+debian-devel mailing list.
 
-I thank all the maintainers who have helped with this effort by adding
-resolvconf support to their packages.
+    http://lists.debian.org/debian-devel/2003/04/msg00580.html
+    http://lists.debian.org/debian-devel/2003/04/msg00629.html
 
-Werner Heuser, Joe Nahmias and Andreas Barth have been helpful sponsors.
+I claim any braindamage in the implementation as my own.
+
+Werner Heuser, Joe Nahmias, Andreas Barth and Marco Nenciarini have all
+been helpful sponsors.
 
 This document was written by Thomas Hood <jdthood@gmail.com> using some
 material written by John Hasler.
+
+I thank all the maintainers who have helped with this effort by adding
+resolvconf support to their packages.
 
 This document is part of resolvconf.
