@@ -14,6 +14,11 @@ is_installed() {
 	dpkg-query -W -f='${Status}\n' "$1" 2>/dev/null | grep -siq '^[[:alpha:]]\+ [[:alpha:]]\+ installed$' >/dev/null 2>&1
 }
 
+if [ "$1" = "install" ] || [ "$1" = "upgrade" ]; then
+    if [ -e "/etc/init.d/resolvconf" ] && [ -L "/etc/init.d/resolvconf" ] && [ $(readlink -f "/etc/init.d/resolvconf") = "/lib/init/upstart-job" ]; then
+        rm -f "/etc/init.d/resolvconf"
+    fi
+fi
 
 ### Create run-time directories ###
 #

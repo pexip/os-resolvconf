@@ -14,6 +14,8 @@ resolvconf (1.76.1pexip1) pexip; urgency=low
     - Move the #DEBHELPER# token in debian/postinst to after the resolv.conf
       symlink is set, so the init script can actually start (since it expects
       /etc/resolv.conf to be a symlink).
+  * debian/preinst: Prepare transition of /etc/init.d/resolvconf
+    from symlink to conffile
 
  -- John-Mark Bell <jmb@pexip.com>  Thu, 23 Mar 2017 23:56:12 +0000
 
