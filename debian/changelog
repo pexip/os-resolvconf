@@ -1,3 +1,9 @@
+resolvconf (1.76.1pexip2) pexip; urgency=low
+
+  * debian/resolvconf.maintscript: Remove dnscache update script on upgrade
+
+ -- John-Mark Bell <jmb@pexip.com>  Mon, 05 Jun 2017 15:56:04 +0100
+
 resolvconf (1.76.1pexip1) pexip; urgency=low
 
   * Migrate to Jessie
