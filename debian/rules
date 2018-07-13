@@ -36,7 +36,9 @@ binary-indep: build
 	dh_installdocs README
 	dh_installman
 	dh_installchangelogs
-	dh_installinit -r
+	dh_systemd_enable
+	dh_installinit --no-start
+	dh_systemd_start -r
 	dh_installppp --name=000resolvconf
 	dh_installifupdown --name=resolvconf
 	dh_installifupdown --name=000resolvconf
