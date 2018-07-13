@@ -1,3 +1,9 @@
+resolvconf (1.76.1pexip3) pexip; urgency=low
+
+  * Reinstate systemd support
+
+ -- John-Mark Bell <jmb@pexip.com>  Mon, 23 Jul 2018 17:12:06 +0100
+
 resolvconf (1.76.1pexip2) pexip; urgency=low
 
   * debian/resolvconf.maintscript: Remove dnscache update script on upgrade
