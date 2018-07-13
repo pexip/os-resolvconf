@@ -550,28 +550,29 @@ TODO
   * bind9
     # 483098: bind9: Please add resolvconf hook script to update
       forwarders list
-      - NO REPLY for over a year
+      - NO REPLY for several years
     # 641714: Please add resolvconf packaging-event hook script
-      - NO REPLY for over a year
+      - NO REPLY for several years
   * dnscache-run (from djbdns)
     # 582755: Add resolvconf support
       - NO REPLY for several years
   * gnome-ppp
     # 258064: Writes to /etc/resolv.conf
+      - NO ACTION for many years
       - WORKAROUND introduced in July 2004 was to make gnome-ppp Conflict
         with resolvconf
   * gnome-system-tools
     # 258553: Incompatible with resolvconf
-      - NO ACTION for several years
+      - NO ACTION for many years
   * ifupdown
     + Handle dns-* commands natively so that the resolver is configured
       before "up" commands are run
   * isc-dhcp-client
     # 700966: Please add resolvconf packaging-event hook script
-      - SUBMITTED
+      - NO REPLY for more than a year
   * kppp
     # 695121; LP#1086336: Writes to /etc/resolvconf
-      - SUBMITTED
+      - NO REPLY for more than a year
   * libadns1
     + It consults resolv.conf so it should already be supported.
       However, someone should test it.
@@ -608,10 +609,10 @@ TODO
       - Tagged WONTFIX
     # 700385: Invalidate hosts cache on resolv.conf change, or
               include resolvconf update script to invalidate it
-      - SUBMITTED
+      - NO REPLY for over a year
   * pdns-recursor
     # 700850: Please add resolvconf packaging-event hook script
-      - SUBMITTED
+      - IN PROGRESS
   * pdnsd
     # 628846: Please add resolvconf packaging-event hook script
       - NO REPLY for over a year
@@ -620,9 +621,6 @@ TODO
       - Tagged WONTFIX
   * resolvconf
     + See http://bugs.debian.org/resolvconf
-  * systemconfigurator
-    # 272475: Please support resolvconf
-      - NO REPLY for many years
   * Users of resolver libraries
     + For any package that contains a program that uses resolver(3) or a
       compatible library, add a /etc/resolvconf/update-libc.d/ script to
@@ -728,6 +726,8 @@ DONE
       - DONE in 1.4.9-1
     # 567879: Please add resolvconf integration
       - DONE in 1.4.9-1
+    # 777228: Please add resolvconf packaging-event hook script
+      - DONE in 1.5.7-2
   * webmin-core
     # 223483: Please play nicely with resolvconf
       - DONE in 1.150-2

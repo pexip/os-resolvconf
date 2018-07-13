@@ -97,8 +97,6 @@ cat /etc/bind/named.conf.options \
 	forwarders { '"${NMSRVRS}"'};/' | sed -e '/^[[:space:]]*$/{ d ; }' \
 	>> "$TMP_FILE"
 
-chown root:bind "$TMP_FILE"
-
 # Reload named unless we know its options haven't changed
 if [ -x /usr/bin/diff ] && [ -f "$DYNAMIC_OPTS_FILE" ] && /usr/bin/diff -q "$DYNAMIC_OPTS_FILE" "$TMP_FILE" > /dev/null ; then
 	# No change
