@@ -52,68 +52,6 @@ esac
 #
 case "$1" in
   configure)
-	if [ -L /etc/resolvconf/run ] ; then
-		# Make sure that the symlink is canonicalizable.
-		RUN_CANONICALPATH="$(readlink -f /etc/resolvconf/run || :)"
-		if [ -z "$RUN_CANONICALPATH" ] ; then
-			# It's not canonicalizable
-			report_warn "Deleting old symlink /etc/resolvconf/run, the canonical path of whose target could not be determined"
-			rm -f /etc/resolvconf/run
-		fi
-	fi
-
-	# /etc/resolvconf/run is not a non-canonicalizable symlink.
-
-	if [ -d /etc/resolvconf/run ] && ! [ -L /etc/resolvconf/run ] ; then
-		# It's a directory right in /etc/resolvconf
-		# Move to the new standard location.
-		# The initscripts package guarantees that the new standard location is available.
-		if mkdir -p /run/resolvconf/interface ; then
-			F="$(echo /etc/resolvconf/run/*)"
-			if [ "$F" ] && [ "$F" != '/etc/resolvconf/run/*' ] ; then
-				if cp -a /etc/resolvconf/run/* /run/resolvconf ; then
-					report_info "Migrated resolvconf run-time data from /etc/resolvconf/run to /run/resolvconf"
-					rm -rf /etc/resolvconf/run
-				fi
-			else
-				rm -rf /etc/resolvconf/run
-			fi
-			ln -nsf /run/resolvconf /etc/resolvconf/run
-		else
-			report_err "Could not create run-time directories; aborting"
-			exit 1
-		fi
-	fi
-
-	# Delete /etc/resolvconf/run if it exists but is neither a directory nor a link to one
-	if [ -e /etc/resolvconf/run ] && [ ! -d /etc/resolvconf/run ] ; then
-		report_warn "Deleting /etc/resolvconf/run which isn't a directory"
-		rm -f /etc/resolvconf/run
-	fi
-
-	# OK, now /etc/resolvconf/run is either:
-	# * nonexistent, or
-	# * a dangling but canonicalizable symlink, or
-	# * a symlink to a directory
-
-	# Create subdirectory
-	if [ -d /etc/resolvconf/run ] ; then
-		# It's a symlink to a directory
-		[ -d /etc/resolvconf/run/interface ] || mkdir /etc/resolvconf/run/interface
-	elif [ -L /etc/resolvconf/run ] ; then
-		# It's a dangling but canonicalizable symlink
-		mkdir "$RUN_CANONICALPATH" "${RUN_CANONICALPATH}/interface"
-	else
-		# It's nonexistent.
-		# Make directory in the standard location and link to it
-		if mkdir -p /run/resolvconf/interface ; then
-			ln -s /run/resolvconf /etc/resolvconf/run
-		else
-			report_err "Could not create run-time directories; aborting"
-			exit 1
-		fi
-	fi
-
 	# Do linkify once again on dpkg-reconfigure
 	if [ "$DEBCONF_RECONFIGURE" = 1 ] || [ "$1" = reconfigure ] ; then
 		rm -f /var/lib/resolvconf/linkified
@@ -148,7 +86,7 @@ case "$1" in
 					[ -f /etc/resolv.conf ] \
 					&& {
 						[ ! -L /etc/resolv.conf ] \
-						|| [ ! "$(readlink /etc/resolv.conf)" = "/etc/resolvconf/run/resolv.conf" ]
+						|| [ ! "$(readlink -m /etc/resolv.conf)" = "/run/resolvconf/resolv.conf" ]
 					}
 				then
 					# Back up original file
@@ -160,17 +98,19 @@ case "$1" in
 					# Before creating the link, make sure that the original file is
 					# at the target of the link.  /sbin/resolvconf will overwrite
 					# this when it does an update, of course.
-					if [ ! -e /etc/resolvconf/run/resolv.conf ] ; then
-						cp -a /etc/resolv.conf /etc/resolvconf/run/resolv.conf
+					if [ ! -e /run/resolvconf/resolv.conf ] ; then
+						cp -aH /etc/resolv.conf /run/resolvconf/resolv.conf
 					fi
 					# Add the original file to the database so that its contents
 					# are included when resolvconf updates.
 					# Yes, this is an ugly workaround for the problem that some
 					# interface configurers haven't added a dpkg-event.d script.
-					cp -a /etc/resolv.conf /etc/resolvconf/run/interface/original.resolvconf
+					cp -aH /etc/resolv.conf /run/resolvconf/interface/original.resolvconf
 				fi
 				# Create the link
-				ln -nsf /etc/resolvconf/run/resolv.conf /etc/resolv.conf
+				# The link is relative to allow for cp from outside a chroot into a chroot
+				# to work without overwriting the file outside the chroot (or failing)
+				ln -nsf ../run/resolvconf/resolv.conf /etc/resolv.conf
 				# Make a record that we have created it
 				:> /var/lib/resolvconf/linkified
 			fi
@@ -204,9 +144,9 @@ is_installed() {
 
 case "$1" in
   configure)
-	if [ -f /etc/resolvconf/run/packages-to-notify ] ; then
-		PACKAGES_TO_NOTIFY="$(cat /etc/resolvconf/run/packages-to-notify)"
-		rm -f /etc/resolvconf/run/packages-to-notify
+	if [ -f /run/resolvconf/packages-to-notify ] ; then
+		PACKAGES_TO_NOTIFY="$(cat /run/resolvconf/packages-to-notify)"
+		rm -f /run/resolvconf/packages-to-notify
 		for PKG in $PACKAGES_TO_NOTIFY ; do
 			if is_installed "$PKG" ; then
 				SCRPT="/usr/lib/resolvconf/dpkg-event.d/$PKG"

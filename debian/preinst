@@ -28,47 +28,8 @@ case "$1" in
 	# Ensure that /etc/resolvconf exists.
 	mkdir -p /etc/resolvconf
 
-	if [ -L /etc/resolvconf/run ] ; then
-		# Make sure that the symlink is canonicalizable.
-		RUN_CANONICALPATH="$(readlink -f /etc/resolvconf/run || :)"
-		if [ -z "$RUN_CANONICALPATH" ] ; then
-			# It's not canonicalizable
-			report_warn "Deleting old symlink /etc/resolvconf/run, the canonical path of whose target could not be determined"
-			rm -f /etc/resolvconf/run
-		fi
-	fi
-
-	# /etc/resolvconf/run is not a non-canonicalizable symlink.
-
-	# Delete /etc/resolvconf/run if it exists but is neither a directory nor a link to one
-	if [ -e /etc/resolvconf/run ] && [ ! -d /etc/resolvconf/run ] ; then
-		report_warn "Deleting /etc/resolvconf/run which isn't a directory"
-		rm -f /etc/resolvconf/run
-	fi
-
-	# OK, now /etc/resolvconf/run is either:
-	# * nonexistent, or
-	# * a dangling but canonicalizable symlink, or
-	# * a symlink to a directory, or
-	# * a directory.
-
-	# Create subdirectory
-	if [ -d /etc/resolvconf/run ] ; then
-		# It's a directory or a symlink to one
-		[ -d /etc/resolvconf/run/interface ] || mkdir /etc/resolvconf/run/interface
-	elif [ -L /etc/resolvconf/run ] ; then
-		# It's a dangling but canonicalizable symlink
-		mkdir "$RUN_CANONICALPATH" "${RUN_CANONICALPATH}/interface"
-	else
-		# It's nonexistent.
-		# Make directory at the standard location.
-		if mkdir -p /run/resolvconf/interface ; then
-			ln -s /run/resolvconf /etc/resolvconf/run
-		else
-			report_err "Could not create run-time directories; aborting"
-			exit 1
-		fi
-	fi
+	# Ensure that /run/resolvconf/interface exists.
+	mkdir -p /run/resolvconf/interface
 	;;
   # abort-upgrade)
 	# Don't do anything because we don't anything in the postrm on upgrade or on failed-upgrade
@@ -90,9 +51,9 @@ case "$1" in
 				PACKAGES_TO_NOTIFY="${PACKAGES_TO_NOTIFY:+$PACKAGES_TO_NOTIFY }$PKG"
 			fi
 		done
-		rm -f /etc/resolvconf/run/packages-to-notify
+		rm -f /run/resolvconf/packages-to-notify
 		if [ "$PACKAGES_TO_NOTIFY" ] ; then
-			echo "$PACKAGES_TO_NOTIFY" > /etc/resolvconf/run/packages-to-notify
+			echo "$PACKAGES_TO_NOTIFY" > /run/resolvconf/packages-to-notify
 		fi
 	fi
 	;;

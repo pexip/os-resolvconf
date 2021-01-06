@@ -29,7 +29,7 @@ RESOLVCONFDIR="${ETCRESOLVCONF}/resolv.conf.d"
 BASEFILE="${RESOLVCONFDIR}/base"
 HEADFILE="${RESOLVCONFDIR}/head"
 TAILFILE="${RESOLVCONFDIR}/tail"
-DYNAMICRSLVCNFFILE="${ETCRESOLVCONF}/run/resolv.conf"
+DYNAMICRSLVCNFFILE="/run/resolvconf/resolv.conf"
 TMPFILE="${DYNAMICRSLVCNFFILE}_new.$$"
 
 # Set unset variables to their defaults
@@ -57,7 +57,7 @@ fi
 report_warning() { echo "$0: Warning: $*" >&2 ; }
 
 resolv_conf_is_symlinked_to_dynamic_file() {
-	[ -L ${ETC}/resolv.conf ] && [ "$(readlink ${ETC}/resolv.conf)" = "$DYNAMICRSLVCNFFILE" ]
+	[ -L ${ETC}/resolv.conf ] && [ "$(readlink -m ${ETC}/resolv.conf)" = "$DYNAMICRSLVCNFFILE" ]
 }
 
 if ! resolv_conf_is_symlinked_to_dynamic_file ; then

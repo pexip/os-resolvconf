@@ -196,7 +196,7 @@ that need to resolve domain names.
 When nameserver information is updated, the script
 .I /etc/resolvconf/update.d/libc
 generates a new version of the resolver configuration file,
-.IR /etc/resolvconf/run/resolv.conf , 
+.IR /run/resolvconf/resolv.conf , 
 as described below.
 If the new version of the file differs
 from the previously generated one
@@ -251,7 +251,7 @@ this dynamically generated resolver configuration file
 the administrator should ensure that
 .I /etc/resolv.conf
 is a symbolic link to
-.IR /etc/resolvconf/run/resolv.conf .
+.IR /run/resolvconf/resolv.conf .
 This link is normally created on installation of the resolvconf package.
 The link is never modified by the
 .B resolvconf
@@ -397,22 +397,6 @@ A deprecated synonym for this variable is
 .TP
 .I /etc/default/resolvconf
 See the ENVIRONMENT VARIABLES section.
-.TP
-.I /etc/resolvconf/run
-This is a symbolic link to a location where nameserver information is stored.
-The location must be on a filesystem that is writable
-early in the boot sequence.
-In Debian the default location is
-.I /run/resolvconf
-and
-in the future this will be
-the only supported location;
-configurability of the location via
-.I /etc/resolvconf/run
-will be dropped.
-Nevertheless, clients should not make any assumptions
-about the location or the canonical path of this directory
-or the hierarchy that is constructed under it.
 .TP
 .I /etc/resolvconf/interface\-order
 Determines the order of precedence of nameserver addresses and search domain names.

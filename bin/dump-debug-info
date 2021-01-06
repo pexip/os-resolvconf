@@ -12,8 +12,7 @@ dump_dir()
 echo "###### Start of debugging information for resolvconf ######"
 dump_dir /etc/resolvconf
 dump_dir /etc/resolvconf/resolv.conf.d
-echo "### ls -l /etc/resolvconf/run"
-ls -l /etc/resolvconf/run || :
+echo "### ls -l /run/resolvconf"
 dump_dir /run/resolvconf
 dump_dir /run/resolvconf/interface
 echo "### ls -l /etc/resolv.conf"

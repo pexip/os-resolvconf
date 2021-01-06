@@ -1,0 +1,11 @@
+[Unit]
+ConditionPathExists=/run/resolvconf/enable-updates
+ConditionFileIsExecutable=/sbin/resolvconf
+After=systemd-resolved.service
+
+[Service]
+Type=oneshot
+ExecStart=+-/bin/sh -c 'cat /run/systemd/resolve/stub-resolv.conf | grep -v edns0 | /sbin/resolvconf -a systemd-resolved'
+
+[Install]
+WantedBy=systemd-resolved.service

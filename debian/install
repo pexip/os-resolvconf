@@ -1,0 +1,4 @@
+etc
+bin/resolvconf sbin
+bin/list-records lib/resolvconf
+bin/dump-debug-info usr/share/resolvconf

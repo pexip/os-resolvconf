@@ -234,7 +234,7 @@ configuration.
       /usr/share/doc/resolvconf/resolvconf-update-bind.
 4. Install the resolvconf package if you have not already done so.
    If you have already done so then consider dpkg-reconfigure'ing it.
-   Agree to symlink /etc/resolv.conf to /etc/resolvconf/run/resolv.conf.
+   Agree to symlink /etc/resolv.conf to /run/resolvconf/resolv.conf.
    You can decline the offer to append the original static resolver
    configuration file to the end of the dynamically generated resolver
    configuration file because you have already modified
@@ -242,10 +242,10 @@ configuration.
 5. Reboot
 6. Check /etc/resolv.conf to make sure that its contents make sense.
 
-If /etc/resolv.conf is not symlinked to /etc/resolvconf/run/resolv.conf then
+If /etc/resolv.conf is not symlinked to /run/resolvconf/resolv.conf then
 a warning message will be printed when /sbin/resolvconf is run.  If you want
 to keep resolvconf installed but for some reason do not want /etc/resolv.conf
-to be symlinked to /etc/resolvconf/run/resolv.conf then you can disable the
+to be symlinked to /run/resolvconf/resolv.conf then you can disable the
 warning message by setting REPORT_ABSENT_SYMLINK=no in
 /etc/default/resolvconf.
 
@@ -329,7 +329,7 @@ Technical overview
     Scripts to run when nameserver information is updated
   + update-libc.d/
     Scripts to run when the resolv.conf file changes
-* Symlink /etc/resolv.conf -> /etc/resolvconf/run/resolv.conf
+* Symlink /etc/resolv.conf -> /run/resolvconf/resolv.conf
 * Configurers of interfaces call /sbin/resolvconf to provide
   resolv.conf-like information after the interface is brought up.  They
   call it again to delete the information when the interface is brought
@@ -492,9 +492,8 @@ that are governed by the following two debconf settings.
 1. resolvconf/linkify-resolvconf
 
 When this is true, the package makes a single attempt to create a symbolic
-link /etc/resolv.conf with target ../run/resolvconf/resolv.conf (Ubuntu) or
-/etc/resolvconf/run/resolv.conf (Debian). (N.B. In both Ubuntu and Debian
-this points ultimately to /run/resolvconf/resolv.conf .)
+link /etc/resolv.conf with target ../run/resolvconf/resolv.conf (this points
+ultimately to /run/resolvconf/resolv.conf).
 
 2. resolvconf/link-tail-to-original
 
@@ -613,9 +612,6 @@ TODO
   * pdns-recursor
     # 700850: Please add resolvconf packaging-event hook script
       - IN PROGRESS
-  * pdnsd
-    # 628846: Please add resolvconf packaging-event hook script
-      - NO REPLY for over a year
   * ppp
     # 208095: Please suggest resolvconf
       - Tagged WONTFIX
@@ -693,6 +689,8 @@ DONE
   * pdnsd
     # 247946: Fix resolvconf support
       - DONE in pdnsd 1.1.10par-4
+    # 628846: Please add resolvconf packaging-event hook script
+      - NOT IMPLEMENTED but pdnsd removed from the archive
   * postfix
     # 212552: Please reload on change of /etc/resolv.conf
       - DONE in 2.0.16-4

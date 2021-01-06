@@ -1,3 +1,144 @@
+resolvconf (1.87) unstable; urgency=medium
+
+  * Undo the damage on an incorrect merge commit:
+    - Fix the maintainer’s address (Closes: #943735)
+    - Revert "Skip pulling data into resolvconf, if isc-dhcp/ifupdown
+      already push the same data to systemd-resolved and it is in use".
+      Debian does not ship said hooks in ifupdown or isc-dhcp-client,
+      so these fixes won’t work. Also, they use systemctl unconditionally
+      which is fine in Ubuntu but not in Debian.
+      (Closes: #979431)
+  * Clean up the old conffile (Closes: #979436)
+
+ -- Andrej Shadura <andrewsh@debian.org>  Wed, 06 Jan 2021 18:54:17 +0100
+
+resolvconf (1.86) unstable; urgency=medium
+
+  [ Michael Biebl ]
+  * Stop using deprecated systemd-resolve tool (Closes: #979258).
+
+ -- Andrej Shadura <andrewsh@debian.org>  Mon, 04 Jan 2021 19:48:56 +0100
+
+resolvconf (1.85) unstable; urgency=medium
+
+  [ Dimitri John Ledkov ]
+  * Skip pulling data into resolvconf, if isc-dhcp/ifupdown already pushed
+    the same data to systemd-resolved and it is in use.
+
+ -- Andrej Shadura <andrewsh@debian.org>  Mon, 04 Jan 2021 19:46:45 +0100
+
+resolvconf (1.84) unstable; urgency=medium
+
+  [ Rob Leslie ]
+  * Escape "~*" to prevent spurious NSS lookups (Closes: #954175)
+
+ -- Andrej Shadura <andrewsh@debian.org>  Tue, 18 Aug 2020 18:40:14 +0200
+
+resolvconf (1.83) unstable; urgency=high
+
+  * Non-maintainer upload.
+  * Update resolvconf system units to prevent infinite restarts due to
+    continious re-execution of the PathExists stanza (Closes:
+    #968015). Thanks to Michael Biebl.
+
+ -- Dimitri John Ledkov <xnox@ubuntu.com>  Tue, 18 Aug 2020 11:56:53 +0100
+
+resolvconf (1.82) unstable; urgency=medium
+
+  [ Andrej Shadura ]
+  * Update the debconf translation templates (Closes: #947164).
+  * Update translations.
+
+  [ Helge Kreutzmann ]
+  * Update German debconf translation (Closes: #947171).
+
+  [ Frans Spiesschaert ]
+  * Update Dutch debconf translation (Closes: #948037).
+
+ -- Andrej Shadura <andrewsh@debian.org>  Fri, 03 Jan 2020 18:32:03 +0100
+
+resolvconf (1.81) unstable; urgency=medium
+
+  [ Russell Coker ]
+  * Set correct SE Linux context on created directories and files
+    (Closes: #850783).
+
+  [ Jakub Wilk ]
+  * Drop symlink resolving logic from the init script (Closes: #946609).
+
+ -- Andrej Shadura <andrewsh@debian.org>  Thu, 19 Dec 2019 15:19:16 +0100
+
+resolvconf (1.80) unstable; urgency=medium
+
+  [ Thomas Hood ]
+  * Bump Standards-Version; no changes required
+  * Fix postrm for Ubuntu (LP: 1593489)
+  * Update README to reflect the removal of pdnsd from the archive
+  * In unit file use network-pre.target (Closes: #847440
+    and LP: #1636912). Thanks to Ryan Harper.
+  * Add systemd predictable interface name patterns (Closes: #877695,
+    #905907). Thanks to Kevin Otte for the patch in LP: #1610479.
+
+  [ Steve Langasek ]
+  * Eliminate all references to /etc/resolvconf/run.  This should all be done
+    directly in /run, there is no reason to support making any of this
+    configurable with a symlink since we already have a versioned dependency
+    on the version of initscripts that introduces the /run transition.
+  * etc/resolvconf/resolv.conf.d/head: add comment about
+    'systemd-resolve --status', since systemd-resolved is now in use in all
+    but the most unusual configurations, and expert users should be given
+    guidance where to find the actual nameservers for debugging purposes.
+    LP: #1638836.
+
+  [ Martin Pitt ]
+  * debian/postinst: Make /etc/resolv.conf a relative symlink so that it
+    works when setting up chroots.
+
+  [ Dimitri John Ledkov ]
+  * Drop ifupdown dependency.
+  * Drop upstart system job.
+  * Use readlink -m when checking the link's destination.
+    (LP: #924836)
+  * Dereference /etc/resolf.conf when creating runtime configuration when
+    migrating to resolvconf managed /etc/resolv.conf. The contents of
+    /etc/resolv.conf (rather than the symlink target information) is
+    needed in /run/resolvconf/resolv.conf and
+    /run/resolvconf/interface/original.resolvconf during migration until
+    resolvconf updates the config next. (LP: #1713149)
+  * Move resolvconf & resolved integration system units from src:systemd
+    to src:resolvconf. Also use a different unit name, to avoid
+    breaks/replaces.
+  * debian/postrm: if resolved managed stub config is available, migrate
+    to it upon resolvconf removal.
+
+  [ Dan Streetman ]
+  * Filter out the edns0 option that systemd-resolved has recently added
+    to its stub-resolv.conf. Using the stub conf with edns0 set with
+    non-local DNS servers can break name resolution. (LP: #1817903)
+
+  [ Alfonso Sánchez-Beato ]
+  * bin/resolvconf: use flock so resolvconf can be called in parallel
+    safely (LP: #1825194).
+
+  [ Andrej Shadura ]
+  * Add /usr/sbin and /usr/bin to PATH (Closes: #832394).
+  * Update the team email address.
+  * Wrap and sort.
+  * Add myself as a co-maintainer.
+  * Verify ifquery is available before running it (we no longer require
+    ifupdown).
+  * Remove id-length from gbp.conf so commit hashes are not prepended
+    to the changelog entries.
+  * Port debian/rules to the dh 12 short form.
+  * d/copyright: Use https protocol in Format field.
+  * d/changelog: Remove trailing whitespaces.
+  * d/control: Set Vcs-* to salsa.debian.org.
+
+  [ Théophile Helleboid ]
+  * Add vpn* to the interfaces-order list.
+
+ -- Andrej Shadura <andrewsh@debian.org>  Tue, 10 Dec 2019 16:45:20 +0100
+
 resolvconf (1.79) unstable; urgency=low
 
   [ Thomas Hood ]
@@ -447,7 +588,7 @@ resolvconf (1.49) experimental; urgency=low
     postinst. (Closes: #551999, #563386).  (Do this in /run if that is
     already already available, otherwise in /lib/init/rw, otherwise in
     /etc/resolvconf.)  Now when other packages call resolvconf before
-    resolvconf's postinst runs, the data are not lost and no error 
+    resolvconf's postinst runs, the data are not lost and no error
     message is printed.
   * If someone has run resolvconf while updates were disabled, update
     when updates are enabled.
@@ -455,7 +596,7 @@ resolvconf (1.49) experimental; urgency=low
     database until the first reboot after installation.  The old behavior
     was to omit these contents unless link-tail-to-original was
     selected with the result that information was missing from
-    resolv.conf until ifdown-ifup cycles.  The new behavior is not 
+    resolv.conf until ifdown-ifup cycles.  The new behavior is not
     correct either, since nameserver addresses are not removed when
     corresponding interfaces are deconfigured, but should have less
     unpleasant consequences than the old behavior.
@@ -562,7 +703,7 @@ resolvconf (1.44) unstable; urgency=low
     (Closes: #522814)
   * Remove /lib/init/rw/resolvconf on purge  (Closes: #531283)
     Thanks to Holger Levsen.
-  
+
   [ Daniel Kahn Gillmor ]
   * debian/control: Update my e-mail address in Uploaders
   * Fix typo in initscript.  Thanks, Peter Eisentraut (Closes: #525681)
@@ -606,7 +747,7 @@ resolvconf (1.41) unstable; urgency=low
     already have been performed on all systems upgraded to sarge.)
     (Closes: #477752)
   * No longer #! bash in postinst
-  
+
   [ Daniel Kahn Gillmor]
   * don't try to manipulate forwarding dnscaches which are marked as
     "down" (Thanks, Soeren Sonnenburg!) (Closes: #479867)
@@ -898,7 +1039,7 @@ resolvconf (1.19) unstable; urgency=high
 
   * debian/control:
     + Downgrade Recommendations to Suggestions so that installing
-      resolvconf doesn't pull in packages such as bind9 if the 
+      resolvconf doesn't pull in packages such as bind9 if the
       user has configured her package manager to install all
       Recommended packages.  Thanks to LaMont Jones for pointing
       out this problem.  (Closes: #266027)
@@ -1045,7 +1186,7 @@ resolvconf (1.13) unstable; urgency=low
   * /etc/resolvconf/resolv.conf.d/head
     + Make warning sterner  (Closes: #248964)
   * /etc/dhcp3/dhclient-enter-hooks.d/resolvconf:
-    + Handle STOP  (Closes: #246558) 
+    + Handle STOP  (Closes: #246558)
     + On TIMEOUT don't always run resolvconf -d
 
  -- Thomas Hood <jdthood@yahoo.co.uk>  Sun, 18 May 2004 10:00:00 +0200
@@ -1267,7 +1408,7 @@ resolvconf (1.1) unstable; urgency=low
     /etc/resolvconf/resolv.conf.d/base is to be used for base (static)
     entries that may be sorted and merged with other entries.
     /etc/resolvconf/resolv.conf.d/tail may be a symlink to ./original
-    on initial installation but the admin can point this somewhere 
+    on initial installation but the admin can point this somewhere
     else or replace it with a real file as he or she wishes.
     To "disable" it, point it at /dev/null.
 
@@ -1395,7 +1536,7 @@ resolvconf (0.44) unstable; urgency=low
         /etc/ppp/ip-down.d/000resolvconf
       (Closes: #212548)
   * debian/preinst:
-    * On upgrade rename 
+    * On upgrade rename
         /etc/ppp/ip-up.d/resolvconf
         /etc/ppp/ip-down.d/resolvconf
       to

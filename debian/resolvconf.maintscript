@@ -1,0 +1,2 @@
+rm_conffile /etc/init/resolvconf.conf 1.80~~
+rm_conffile /etc/resolvconf/update.d/dnscache 1.75~~
