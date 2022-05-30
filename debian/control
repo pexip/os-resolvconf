@@ -9,7 +9,7 @@ Homepage: http://alioth.debian.org/projects/resolvconf/
 Vcs-Git: git://anonscm.debian.org/resolvconf/resolvconf.git
 Vcs-Browser: http://anonscm.debian.org/gitweb/?p=resolvconf/resolvconf.git
 Standards-Version: 3.9.6.0
-XS-Pexip-Upstream: http://ftp.debian.org/debian/ stretch
+XS-Pexip-Upstream: http://ftp.debian.org/debian/ buster
 
 Package: resolvconf
 Architecture: all
