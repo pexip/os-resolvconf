@@ -1,13 +1,14 @@
 # LANGUAGE translation of resolvconf debconf templates
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the resolvconf package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: resolvconf VERSION\n"
 "Report-Msgid-Bugs-To: resolvconf@packages.debian.org\n"
-"POT-Creation-Date: 2011-05-31 20:26+0200\n"
+"POT-Creation-Date: 2019-12-22 14:33+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -28,10 +29,10 @@ msgstr ""
 msgid ""
 "The resolvconf package contains the infrastructure required for dynamic "
 "updating of the resolver configuration file. Part of the necessary "
-"infrastructure is a symbolic link from /etc/resolv.conf to /etc/resolvconf/"
-"run/resolv.conf. If you choose this option then this link will be created; "
-"the existing /etc/resolv.conf file will be preserved as /etc/resolvconf/"
-"resolv.conf.d/original, and will be restored if this package is removed."
+"infrastructure is a symbolic link from /etc/resolv.conf to /run/resolvconf/"
+"resolv.conf. If you choose this option then this link will be created; the "
+"existing /etc/resolv.conf file will be preserved as /etc/resolvconf/resolv."
+"conf.d/original, and will be restored if this package is removed."
 msgstr ""
 
 #. Type: boolean

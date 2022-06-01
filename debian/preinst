@@ -34,7 +34,7 @@ case "$1" in
 	mkdir -p /etc/resolvconf
 
 	# Ensure that /run/resolvconf/interface exists.
-	mkdir -p /run/resolvconf/interface 
+	mkdir -p /run/resolvconf/interface
 	;;
   # abort-upgrade)
 	# Don't do anything because we don't anything in the postrm on upgrade or on failed-upgrade

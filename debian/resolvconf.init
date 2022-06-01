@@ -54,16 +54,17 @@ create_runtime_directories()
 {
 	umask 022
 	if [ ! -d "$RUN_DIR" ] ; then
-		[ -L "$RUN_DIR" ] || log_action_end_msg_and_exit 1 "$RUN_DIR is neither a directory nor a symbolic link"
-		# It's a symlink. Its target is not a dir.
-		{ RUN_CANONICALDIR="$(readlink -f "$RUN_DIR")" && [ "$RUN_CANONICALDIR" ] ; } || log_action_end_msg_and_exit 1 "Canonical path of the run directory could not be determined"
 		# Create directory at the target
-		mkdir "$RUN_CANONICALDIR" || log_action_end_msg_and_exit 1 "Error creating directory $RUN_CANONICALDIR"
+		mkdir "$RUN_DIR" || log_action_end_msg_and_exit 1 "Error creating directory $RUN_DIR"
 	fi
+	[ -x /sbin/restorecon ] && /sbin/restorecon "$RUN_CANONICALDIR"
+
 	# The resolvconf run directory now exists.
 	if [ ! -d "${RUN_DIR}/interface" ] ; then
 		mkdir "${RUN_DIR}/interface" || log_action_end_msg_and_exit 1 "Error creating directory ${RUN_DIR}/interface"
 	fi
+	[ -x /sbin/restorecon ] && /sbin/restorecon "${RUN_DIR}/interface" "${RUN_DIR}/resolv.conf "${RUN_DIR}/enable-updates
+
 	# The interface directory now exists.  We are done.
 	return
 }

@@ -2,21 +2,42 @@ Source: resolvconf
 Section: net
 Priority: optional
 Maintainer: Pexip AS <packaging@pexip.com>
-XSBC-Pexip-Original-Maintainer: resolvconf maintainers <resolvconf-devel@lists.alioth.debian.org>
-XSBC-Pexip-Original-Uploaders: Thomas Hood <jdthood@gmail.com>, Marco Nenciarini <mnencia@debian.org>
-Build-Depends: debhelper (>= 8), dh-systemd
+XSBC-Pexip-Original-Maintainer: resolvconf team <team+resolvconf@tracker.debian.org>
+XSBC-Pexip-Original-Uploaders:
+ Andrej Shadura <andrewsh@debian.org>,
+ Thomas Hood <jdthood@gmail.com>,
+ Marco Nenciarini <mnencia@debian.org>
+Build-Depends:
+ debhelper-compat (= 12)
 Homepage: http://alioth.debian.org/projects/resolvconf/
-Vcs-Git: git://anonscm.debian.org/resolvconf/resolvconf.git
-Vcs-Browser: http://anonscm.debian.org/gitweb/?p=resolvconf/resolvconf.git
-Standards-Version: 3.9.6.0
+Vcs-Git: https://salsa.debian.org/debian/resolvconf.git
+Vcs-Browser: https://salsa.debian.org/debian/resolvconf
+Standards-Version: 3.9.8.0
 XS-Pexip-Upstream: http://deb.debian.org/debian/ bullseye
 
 Package: resolvconf
 Architecture: all
-Enhances: isc-dhcp-client, dhcpcd, pump, udhcpc, ppp, ifupdown, network-manager, dnsmasq, pdnsd, libc6, nscd
-Pre-Depends: ${misc:Pre-Depends}
-Depends: ifupdown, lsb-base (>= 4.1+Debian3), ${misc:Depends}
-Breaks: dnscache-run, dhcp3-client (<< 4.1.1-P1-15+squeeze1), sysv-rc (<< 2.88dsf-42)
+Enhances:
+ dhcpcd,
+ dnsmasq,
+ ifupdown,
+ isc-dhcp-client,
+ libc6,
+ network-manager,
+ nscd,
+ pdnsd,
+ ppp,
+ pump,
+ udhcpc
+Pre-Depends:
+ ${misc:Pre-Depends}
+Depends:
+ lsb-base (>= 4.1+Debian3),
+ ${misc:Depends}
+Breaks:
+ dhcp3-client (<< 4.1.1-P1-15+squeeze1),
+ dnscache-run,
+ sysv-rc (<< 2.88dsf-42)
 Description: name server information handler
  Resolvconf is a framework for keeping up to date the system's
  information about name servers. It sets itself up as the intermediary

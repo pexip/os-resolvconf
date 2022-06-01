@@ -10,7 +10,7 @@ eni_seems_adequate()
 	# the interfaces file then that is adequate.
 	# Formerly: [ -f /etc/network/interfaces ] && grep -q dns-nameservers /etc/network/interfaces > /dev/null
 	# but now we use ifquery for correctness.
-	ifquery $(ifquery --list -a) | grep -q '^dns-nameserver'
+	which ifquery >/dev/null && ifquery $(ifquery --list -a) | grep -q '^dns-nameserver'
 }
 
 original_seems_nm_generated()
