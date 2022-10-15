@@ -2,3 +2,4 @@ etc
 bin/resolvconf sbin
 bin/list-records lib/resolvconf
 bin/dump-debug-info usr/share/resolvconf
+bin/normalize-resolvconf lib/resolvconf

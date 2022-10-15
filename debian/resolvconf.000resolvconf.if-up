@@ -9,6 +9,8 @@
 
 case "$ADDRFAM" in
   inet|inet6) : ;;
+  # hack to support for ifupdown2 combined addr family (inet,inet6 becomes inet)
+  *,*) ADDRFAM="$(echo $ADDRFAM | tr , '\n' | sort | head -n1)" ;;
   *) exit 0 ;;
 esac
 

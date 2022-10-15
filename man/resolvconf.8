@@ -13,11 +13,27 @@ cat \fIFILE\fR |
 \fB\-u\fR
 .PP
 .B resolvconf
+.B \-i
+.PP
+.B resolvconf
+.B \-\-list
+|
+.B \-l
+.PP
+.B resolvconf
 .B \-\-enable\-updates
 |
 .B \-\-disable\-updates
 |
 .B \-\-updates\-are\-enabled
+.B resolvconf
+.B \-\-version
+.PP
+.B resolvconf
+.B \-\-help
+|
+.B \-h
+.PP
 .SH DESCRIPTION
 The resolvconf package comprises a simple database
 for run-time nameserver information
@@ -326,6 +342,14 @@ e.g., "eth0.dhclient".
 Just run the update scripts
 (if updating is enabled).
 .TP
+.B \-i
+List interfaces providing DNS configuration.
+.TP
+\fB\-\-list\fR | \fB\-l\fR
+Show DNS configuration for each interfact in
+.I resolv.conf
+format without any processing.
+.TP
 With \fB\-a\fR, \fB\-d\fR or \fB\-u\fR:
 if updating is not enabled, schedule a delayed update.
 The delayed update will be carried out when updates are enabled.
@@ -343,6 +367,12 @@ Clear the flag.
 \fB\-\-updates\-are\-enabled\fR
 Return 0 if the flag is set,
 otherwise return 1.
+.TP
+.B \-\-version
+Print the resolvconf version.
+.TP
+\fB\-\-help\fR | \fB\-h\fR
+Print a short usage notice.
 .SH ENVIRONMENT VARIABLES
 The following variables can be set in the configuration file
 .IR /etc/default/resolvconf .

@@ -1,0 +1,22 @@
+#!/bin/sed -f
+# Echo stdin with:
+#	comments removed;
+#	initial and terminal whitespace removed;
+#	whitespace strings replaced by single blanks;
+#	leading zeroes removed from nameserver address fields;
+#	first set of zero fields in an IPv6 address collapsed to '::';
+#	empty lines removed.
+s/#.*$//
+s/[[:blank:]]\+$//
+s/^[[:blank:]]\+//
+s/[[:blank:]]\+/ /g
+/^nameserver/!b ENDOFCYCLE
+s/$/ /
+s/\([:. ]\)0\+/\10/g
+s/\([:. ]\)0\([123456789abcdefABCDEF][[:xdigit:]]*\)/\1\2/g
+/::/b ENDOFCYCLE; s/ \(0[: ]\)\+/ ::/
+/::/b ENDOFCYCLE; s/:\(0[: ]\)\+/::/
+: ENDOFCYCLE
+
+s/[[:blank:]]\+$//
+/^$/d

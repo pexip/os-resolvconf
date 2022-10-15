@@ -16,7 +16,7 @@
 #
 
 set -e
-PATH=/sbin:/bin
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
 
 [ -x /lib/resolvconf/list-records ] || exit 1
 

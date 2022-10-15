@@ -1,0 +1,18 @@
+#!/bin/sh
+
+eval "$(sed -n '/^PATTERNS=/,/"/p' bin/list-records)"
+
+diff -u etc/resolvconf/interface-order - --label interface-order --label list-records <<EOF
+# interface-order(5)
+$PATTERNS
+EOF
+
+if [ $? = 1 ]
+then
+	echo "
+Interface order list in bin/list-records and etc/resolvconf/interface-order do not match.
+" >&2
+	exit 2
+fi
+
+exit 0

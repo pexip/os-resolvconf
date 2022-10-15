@@ -5,8 +5,31 @@
 
 set -e
 
-echo_usage() { echo "Usage: resolvconf (-d IFACE|-a IFACE|-u|--enable-updates|--disable-updates|--updates-are-enabled)" ; }
+echo_usage() { cat <<-EOF
+	Usage: resolvconf COMMAND
+	
+	Manage nameserver information.
+	
+	Commands:
+	  -a IFACE               Add DNS configuration for IFACE from stdin.
+	  -d IFACE               Delete DNS configuration for IFACE.
+	  -u                     Run update actions (e.g. regenerate resolv.conf).
+	  -i                     List interfaces providing DNS configuration.
+	  --list, -l             Show DNS configuration for each interface.
+	  --enable-updates       Enable updates; run update actions if any are pending.
+	  --disable-updates      Disable updates until re-enabled.
+	  --updates-are-enabled  Return 0 if updates are enabled, 1 otherwise.
+	  --version              Print the resolvconf version.
+	  --help, -h             Print this help text.
+	
+	The IFACE argument may not contain spaces, slashes, an initial dot, an initial
+	hyphen or an initial tilde. IFACE is conventionally formed from the interface
+	name, a dot, and the name of the interface configuration program (e.g. dhclient)
+	or the address family name (e.g. inet or inet6): eth0.dhclient, wlan0.inet6 etc.
+	EOF
+}
 
+VERSION="Git snapshot"
 PATH=/sbin:/bin:/usr/sbin:/usr/bin
 MYNAME="${0##*/}"
 RUN_DIR=/run/resolvconf
@@ -43,6 +66,26 @@ case "$CMD" in
 		exit 1
 	fi
 	;;
+ --version)
+	echo "Debian resolvconf $VERSION"
+	if [ -r /usr/share/doc/resolvconf/copyright ]
+	then
+		echo "Copyright: "
+		sed -n '/Copyright:/,${ s/Copyright[: ]//g; /^$/d; /^License: /{p;q}; s/^ */  /; p}' \
+			/usr/share/doc/resolvconf/copyright
+	fi
+	exit 0
+	;;
+ --help|-h)
+	echo_usage >&2
+	exit 0
+	;;
+ --list|-l)
+	;;
+  -i)
+	echo $(/lib/resolvconf/list-records)
+	exit 0
+	;;
   *)
 	report_err "Command not recognized"
 	echo_usage >&2
@@ -67,7 +110,7 @@ update_and_exit()
 	exec run-parts ${1:+--arg="$1"} ${2:+--arg="$2"} /etc/resolvconf/update.d
 }
 
-# Handle commands that don't require normalized_stdin()
+# Handle commands that don't require normalized stdin
 
 case "$CMD" in
   -d)
@@ -85,6 +128,14 @@ case "$CMD" in
 		: >| "$POSTPONED_UPDATE_FLAGFILE"
 		exit 0
 	fi
+	;;
+  --list|-l)
+	for f in $(/lib/resolvconf/list-records)
+	do
+		echo "# resolv.conf from $f"
+		cat $f
+	done
+	exit 0
 	;;
   -u)
 	if [ -e "$ENABLE_UPDATES_FLAGFILE" ] ; then
@@ -115,44 +166,11 @@ case "$CMD" in
 	;;
 esac
 
-#	
-# The following function must EXACTLY the same in the resolvconf
-# and test-normalization scripts. And the test must pass!
-#
-### BEGIN FUNCTION TO COPY TO THE test-normalization SCRIPT ###
-#
-# Echo stdin with:
-#	comments removed;
-#	initial and terminal whitespace removed;
-#	whitespace strings replaced by single blanks;
-#	leading zeroes removed from nameserver address fields;
-#	first set of zero fields in an IPv6 address collapsed to '::';
-#	empty lines removed.
-normalized_stdin() {
-	sed                                                                        \
-		-e 's/#.*$//'                                                      \
-		-e 's/[[:blank:]]\+$//'                                            \
-		-e 's/^[[:blank:]]\+//'                                            \
-		-e 's/[[:blank:]]\+/ /g'                                           \
-		-e '/^nameserver/!b ENDOFCYCLE'                                    \
-		-e 's/$/ /'                                                        \
-		-e 's/\([:. ]\)0\+/\10/g'                                          \
-		-e 's/\([:. ]\)0\([123456789abcdefABCDEF][[:xdigit:]]*\)/\1\2/g'   \
-		-e '/::/b ENDOFCYCLE; s/ \(0[: ]\)\+/ ::/'                         \
-		-e '/::/b ENDOFCYCLE; s/:\(0[: ]\)\+/::/'                          \
-		-e ': ENDOFCYCLE'                                                  \
-		- |                                                                \
-	sed                                                                        \
-		-e 's/[[:blank:]]\+$//'                                            \
-		-e '/^$/d'
-}
-### END FUNCTION TO COPY TO THE test-normalization SCRIPT ###
-
 case "$CMD" in
   -a)
 	OLD_CONTENT=""
 	[ -f "$IFACE" ] && OLD_CONTENT="$(cat "$IFACE")"
-	NEW_CONTENT="$(normalized_stdin)"
+	NEW_CONTENT="$(/lib/resolvconf/normalize-resolvconf)"
 	# Proceed only if content has changed. The test here can't
 	# eliminate 100% of redundant invocations of update scripts
 	# because we don't do any locking; however it certainly does
