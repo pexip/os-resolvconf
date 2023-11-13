@@ -4,18 +4,17 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: resolvconf 1.55\n"
+"Project-Id-Version: resolvconf 1.84\n"
 "Report-Msgid-Bugs-To: resolvconf@packages.debian.org\n"
 "POT-Creation-Date: 2011-05-31 20:26+0200\n"
-"PO-Revision-Date: 2011-06-03 03:44+0100\n"
-"Last-Translator: Martin Bagge / brother <brother@bsnet.se>\n"
+"PO-Revision-Date: 2020-08-22 12:33+0200\n"
+"Last-Translator: Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
 "Language-Team: Swedish <debian-l10n-swedish@lists.debian.org>\n"
 "Language: sv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-Language: Swedish\n"
-"X-Poedit-Country: Sweden\n"
+"X-Generator: Poedit 2.4.1\n"
 
 #. Type: boolean
 #. Description
@@ -30,17 +29,16 @@ msgid ""
 "The resolvconf package contains the infrastructure required for dynamic "
 "updating of the resolver configuration file. Part of the necessary "
 "infrastructure is a symbolic link from /etc/resolv.conf to /run/resolvconf/"
-"resolv.conf. If you choose this option then this link will be created; "
-"the existing /etc/resolv.conf file will be preserved as /etc/resolvconf/"
-"resolv.conf.d/original, and will be restored if this package is removed."
+"resolv.conf. If you choose this option then this link will be created; the "
+"existing /etc/resolv.conf file will be preserved as /etc/resolvconf/resolv."
+"conf.d/original, and will be restored if this package is removed."
 msgstr ""
 "Detta paket innehåller infrastrukturen som krävs för dynamiska uppdateringar "
 "av filen för uppslagskonfigurationen. En del av den nödvändiga "
 "infrastrukturen är en symbolisk länk från /etc/resolv.conf till /run/"
-"resolvconf/resolv.conf. Om du godkänner kommer denna länk att skapas. "
-"Den existerande filen /etc/resolv.conf kommer att behållas som /etc/"
-"resolvconf/resolv.conf.d/original; den kommer att återställas om detta paket "
-"tas bort."
+"resolvconf/resolv.conf. Om du godkänner kommer denna länk att skapas. Den "
+"existerande filen /etc/resolv.conf kommer att behållas som /etc/resolvconf/"
+"resolv.conf.d/original; den kommer att återställas om detta paket tas bort."
 
 #. Type: boolean
 #. Description
@@ -72,7 +70,7 @@ msgstr ""
 #. Description
 #: ../templates:3001 ../templates:4001
 msgid "Reboot recommended"
-msgstr "Omstart rekomenderas"
+msgstr "Omstart rekommenderas"
 
 #. Type: note
 #. Description
@@ -83,7 +81,7 @@ msgid ""
 "resolvconf program. However, although installation of the resolvconf package "
 "triggers them to supply their information, some of them fail to do so."
 msgstr ""
-"Programmet resolvconf ska få information namnserverinformation från "
+"Programmet resolvconf ska få namnserverinformation från "
 "gränssnittskonfiguratorer och lokala namncacheservrar. Trots att "
 "installationen av paketet resolvconf säger till dem att dela med sig av sin "
 "information så finns det vissa som inte gör detta."
@@ -103,7 +101,7 @@ msgstr ""
 "Detta fel innebär att namnserverinformation vid installation av paketet "
 "resolvconf om inte följande lösning används för att gå runt problemet; "
 "resolvconf tar med sig all information från /etc/resolv.conf till databasen "
-"fram tills omstart av systemet. Detta är innebär i förlängningen att "
+"fram tills omstart av systemet. Detta innebär i förlängningen att "
 "namnserverinformation som sparas undan finns kvar även om gränssnittet som "
 "det är associerat med avaktiveras. (Detta beteende bedöms mindre skadligt än "
 "att korrekt information försvinner.)"
@@ -130,7 +128,7 @@ msgid ""
 "about name servers becoming unavailable. To correct this problem it is "
 "recommended that the system be rebooted."
 msgstr ""
-"När paketet resolvconf togs bort kan information om namnserverar ha gått "
+"När paketet resolvconf togs bort kan information om namnservrar ha gått "
 "förlorad. För att korrigera detta problem bör systemet startas om."
 
 #. Type: boolean
@@ -163,7 +161,7 @@ msgid ""
 msgstr ""
 "Så länge /etc/network/interfaces inte har ändrats och de påverkade "
 "gränssnitten stoppats och startats kommer namnservrarnas adresser inte att "
-"inkluderas i den dynamiskt skapade uppslagsningskonfigurationen."
+"inkluderas i den dynamiskt skapade uppslagningskonfigurationen."
 
 #. Type: boolean
 #. Description

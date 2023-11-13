@@ -2,6 +2,7 @@
 Description=Nameserver information manager
 Documentation=man:resolvconf(8)
 DefaultDependencies=no
+After=systemd-tmpfiles-setup.service
 Before=network-pre.target
 Wants=network-pre.target
 

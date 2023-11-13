@@ -12,6 +12,9 @@
 
 set -e
 
+RUN_DIR=/run/resolvconf
+cd "${RUN_DIR}/interface"
+
 RECORD_TO_WAIT_FOR=""  # This means: don't wait before printing
 [ "$1" = "--after" ] && RECORD_TO_WAIT_FOR="$2"
 FIRST_ARG_WITHOUT_OPTION_PREFIX="${1#--after=}"
@@ -47,6 +50,7 @@ lo
 tun*
 tap*
 hso*
+vpn*
 em+([0-9])?(_+([0-9]))*
 p+([0-9])p+([0-9])?(_+([0-9]))*
 en+([bcosxpP])*([^.]).inet6

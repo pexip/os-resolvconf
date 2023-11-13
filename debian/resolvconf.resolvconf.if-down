@@ -9,6 +9,7 @@
 
 case "$ADDRFAM" in
   inet|inet6) :      ;;
+  *,*) ADDRFAM="$(echo $ADDRFAM | tr , '\n' | sort | head -n1)" ;;
   *)          exit 0 ;;
 esac
 
