@@ -1,3 +1,9 @@
+resolvconf (1.91+nmu1pexip1) pexip-bookworm; urgency=medium
+
+  * Initial bookworm build
+
+ -- Mark Hymers <mark.hymers@pexip.com>  Thu, 16 Nov 2023 10:28:16 +0000
+
 resolvconf (1.91+nmu1) unstable; urgency=medium
 
   * Non-maintainer upload.
