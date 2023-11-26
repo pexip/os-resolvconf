@@ -1,3 +1,13 @@
+resolvconf (1.92) unstable; urgency=medium
+
+  [ Tianyu Chen ]
+  * resolvconf(8): Fix new paragraph.
+
+  [ Andrej Shadura ]
+  * Move binaries to /usr.
+
+ -- Andrej Shadura <andrewsh@debian.org>  Sun, 26 Nov 2023 14:18:54 +0000
+
 resolvconf (1.91+nmu1) unstable; urgency=medium
 
   * Non-maintainer upload.
