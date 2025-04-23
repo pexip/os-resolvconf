@@ -39,7 +39,7 @@ in debian/test-normalization.
 Loop dangers
 ------------
 Remember the interesting fact that postinst runs dpkg-event.d/foo
-which probably runs /sbin/resolvconf which probably runs update.d/foo.
+which probably runs /usr/sbin/resolvconf which probably runs update.d/foo.
 
 
 Famous quotations

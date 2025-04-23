@@ -18,7 +18,7 @@
 set -e
 PATH=/sbin:/bin:/usr/sbin:/usr/bin
 
-[ -x /lib/resolvconf/list-records ] || exit 1
+[ -x /usr/lib/resolvconf/list-records ] || exit 1
 
 # Default override
 [ -r /etc/default/resolvconf ] && . /etc/default/resolvconf
@@ -107,7 +107,7 @@ uniquify_nameserver_list()
 	done
 }
 
-RSLVCNFFILES="$(/lib/resolvconf/list-records)"
+RSLVCNFFILES="$(/usr/lib/resolvconf/list-records)"
 
 [ -f "$BASEFILE" ] && RSLVCNFFILES="$RSLVCNFFILES
 $BASEFILE"

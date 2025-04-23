@@ -1,0 +1,201 @@
+# LANGUAGE translation of resolvconf debconf templates
+# Copyright © 2024 Free Software Foundation, Inc.
+# This file is distributed under the same license as the resolvconf package.
+# poc senderi <pocsenderi@protonmail.com>, 2024.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: resolvconf VERSION\n"
+"Report-Msgid-Bugs-To: resolvconf@packages.debian.org\n"
+"POT-Creation-Date: 2019-12-22 14:33+0100\n"
+"PO-Revision-Date: 2025-02-22 07:03+0100\n"
+"Last-Translator: poc senderi <pocsenderi@protonmail.com>\n"
+"Language-Team: \n"
+"Language: ca\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.2.2\n"
+
+#. Type: boolean
+#. Description
+#: ../templates:2001
+msgid "Prepare /etc/resolv.conf for dynamic updates?"
+msgstr "Voleu preparar «/etc/resolv.conf» per a actualitzacions dinàmiques?"
+
+#. Type: boolean
+#. Description
+#: ../templates:2001
+msgid ""
+"The resolvconf package contains the infrastructure required for dynamic "
+"updating of the resolver configuration file. Part of the necessary "
+"infrastructure is a symbolic link from /etc/resolv.conf to /run/resolvconf/"
+"resolv.conf. If you choose this option then this link will be created; the "
+"existing /etc/resolv.conf file will be preserved as /etc/resolvconf/resolv."
+"conf.d/original, and will be restored if this package is removed."
+msgstr ""
+"El paquet «resolvconf» conté la infraestructura necessària per a "
+"l'actualització dinàmica del fitxer de configuració del «resolver». Part de "
+"la infraestructura necessària és un enllaç simbòlic de «/etc/resolv.conf» a "
+"«/run/resolvconf/resolv.conf». Si trieu aquesta opció, es crearà aquest "
+"enllaç; el fitxer «/etc/resolv.conf» existent es conservarà com a «/etc/"
+"resolvconf/resolv.conf.d/original», i serà restaurat si s'elimina aquest "
+"paquet."
+
+#. Type: boolean
+#. Description
+#: ../templates:2001
+msgid ""
+"Declining this option will prevent future installations from recreating the "
+"symbolic link and therefore the resolver configuration file will not be "
+"dynamically updated. Dynamic updating can then be activated following "
+"instructions in the README file."
+msgstr ""
+"Declinar aquesta opció evitarà que les futures instal·lacions recreïn "
+"l'enllaç simbòlic i, per tant, el fitxer de configuració del «resolver» no "
+"s'actualitzarà dinàmicament. L'actualització dinàmica es pot activar "
+"llavors seguint les instruccions del fitxer README."
+
+#. Type: boolean
+#. Description
+#: ../templates:2001
+msgid ""
+"The presence of resolvconf can affect the behavior of other programs, so it "
+"should not be left installed if unconfigured."
+msgstr ""
+"La presència del «resolvconf» pot afectar el comportament d'altres "
+"programes, per la qual cosa no s'ha de deixar instal·lat si no està "
+"configurat."
+
+#. Type: note
+#. Description
+#. Type: note
+#. Description
+#: ../templates:3001 ../templates:4001
+msgid "Reboot recommended"
+msgstr "Es recomana reiniciar"
+
+#. Type: note
+#. Description
+#: ../templates:3001
+msgid ""
+"Suppliers of name server information such as local caching name servers and "
+"interface configurers are expected to supply name server information to the "
+"resolvconf program. However, although installation of the resolvconf "
+"package triggers them to supply their information, some of them fail to do "
+"so."
+msgstr ""
+"S'espera que els proveïdors d'informació del servei de noms, com ara "
+"servidors de noms locals de memòria cau i configuradors d'interfície, "
+"proporcionin informació del servei de noms al programa «resolvconf». No "
+"obstant això, encara que la instal·lació del paquet «resolvconf» els activi "
+"per subministrar informació, alguns d'ells no ho fan."
+
+#. Type: note
+#. Description
+#: ../templates:3001
+msgid ""
+"This bug would lead to loss of valid name server information on "
+"installation of the resolvconf package if the following workaround were not "
+"adopted: resolvconf includes the full contents of the pre-installation /etc/"
+"resolv.conf in its database until reboot. This has the drawback that name "
+"server information is retained even if the associated interface is later "
+"deconfigured. (This incorrect behavior is judged to be less harmful than "
+"the alternative of losing valid information.)"
+msgstr ""
+"Aquest error provocaria la pèrdua d'informació vàlida del servei de noms a "
+"l'instal·lar el paquet «resolvconf» si no s'adopta la següent solució: el "
+"«resolvconf» inclou a la seva base de dades el contingut complet de «/etc/"
+"resolv.conf» abans d'instal·lar-se fins que es reiniciï. Això té "
+"l'inconvenient de què la informació del servei de noms es manté fins i tot "
+"si la interfície associada es desconfigura més tard (aquest comportament "
+"incorrecte es considera menys perjudicial que l'alternativa de perdre "
+"informació vàlida)."
+
+#. Type: note
+#. Description
+#: ../templates:3001
+msgid ""
+"Until the bug in question is fixed and the workaround removed, the only way "
+"to ensure that resolvconf has fully correct name server information after "
+"the resolvconf package has been installed on a running system is to reboot "
+"the system."
+msgstr ""
+"Fins que no es resolgui l'error en qüestió i s'elimini la solució, l'única "
+"manera d'assegurar que el «resolvconf» tingui la informació del servei de "
+"noms completament correcta després de ser instal·lat en un sistema en "
+"execució és reiniciar el sistema."
+
+#. Type: note
+#. Description
+#: ../templates:4001
+msgid ""
+"The removal of the resolvconf package may have resulted in some information "
+"about name servers becoming unavailable. To correct this problem it is "
+"recommended that the system be rebooted."
+msgstr ""
+"L'eliminació del paquet «resolvconf» pot haver donat lloc al fet que alguna "
+"informació sobre els servidors de noms no estigui disponible. Per corregir "
+"aquest problema es recomana que es reiniciï el sistema."
+
+#. Type: boolean
+#. Description
+#: ../templates:5001
+msgid "Append original file to dynamic file?"
+msgstr "Voleu annexar el fitxer original al fitxer dinàmic?"
+
+#. Type: boolean
+#. Description
+#: ../templates:5001
+msgid ""
+"If the original static resolver configuration file (/etc/resolv.conf) "
+"contains name server addresses, those addresses should be listed on \"dns-"
+"nameservers\" lines in /etc/network/interfaces. For more information, "
+"please consult the resolvconf(8) man page and the README file."
+msgstr ""
+"Si el fitxer de configuració original del «resolver» estàtic («/etc/resolv."
+"conf») conté adreces de servidors de noms, aquestes adreces s'han de "
+"llistar a les línies «dns-nameservers» de «/etc/network/interfaces». Per a "
+"més informació, consulteu la pàgina del manual «resolvconf(8)» i el fitxer "
+"README."
+
+#. Type: boolean
+#. Description
+#: ../templates:5001
+msgid ""
+"Until /etc/network/interfaces has been edited and the affected interfaces "
+"brought down and up again, the name server addresses will not be included "
+"in the dynamically generated resolver configuration file."
+msgstr ""
+"Fins que no s'hagi editat «/etc/network/interfaces» i les interfícies "
+"afectades s'hagin desactivat i tornat a activar, les adreces de servidors "
+"de noms no s'inclouran al fitxer de configuració del «resolver» generat "
+"dinàmicament."
+
+#. Type: boolean
+#. Description
+#: ../templates:5001
+msgid ""
+"If you choose this option, a temporary workaround will be put in place: a "
+"symbolic link will be created (if it does not already exist) from /etc/"
+"resolvconf/resolv.conf.d/tail to /etc/resolvconf/resolv.conf.d/original. "
+"This will cause the whole of that original resolver configuration file to "
+"be appended to the dynamically generated file."
+msgstr ""
+"Si trieu aquesta opció, es posarà en marxa una solució temporal: es crearà "
+"un enllaç simbòlic (si no existeix ja) des de «/etc/resolvconf/resolv.conf."
+"d/tail» cap a «/etc/resolvconf/resolv.conf.d/original». Això farà que tot "
+"el fitxer de configuració original del «resolver» s'afegeixi al final del "
+"fitxer generat dinàmicament."
+
+#. Type: boolean
+#. Description
+#: ../templates:5001
+msgid ""
+"After the required \"dns-nameservers\" lines have been added to /etc/"
+"network/interfaces, the /etc/resolvconf/resolv.conf.d/tail link should be "
+"replaced by one to /dev/null."
+msgstr ""
+"Després que s'hagin afegit les línies \"dns-nameservers\" requerides a «/"
+"etc/network/interfaces», l'enllaç «/etc/resolvconf/resolv.conf.d/tail» "
+"hauria de ser reemplaçat per un a /dev/null."

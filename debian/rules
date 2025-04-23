@@ -14,7 +14,7 @@ override_dh_auto_test:
 	debian/test-normalization
 
 execute_after_dh_install:
-	sed -i 's/^VERSION=.*/VERSION="$(DEB_VERSION)"/' debian/*/sbin/resolvconf
+	sed -i 's/^VERSION=.*/VERSION="$(DEB_VERSION)"/' debian/*/usr/sbin/resolvconf
 
 override_dh_installinit:
 	dh_installinit --no-start

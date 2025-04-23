@@ -8,7 +8,6 @@ Uploaders:
  Marco Nenciarini <mnencia@debian.org>
 Build-Depends:
  debhelper-compat (= 13),
- dh-sequence-movetousr,
 Homepage: https://salsa.debian.org/debian/resolvconf
 Vcs-Git: https://salsa.debian.org/debian/resolvconf.git
 Vcs-Browser: https://salsa.debian.org/debian/resolvconf

@@ -1,3 +1,35 @@
+resolvconf (1.94) unstable; urgency=medium
+
+  * Sync interface order lists between interface-order and list-records.
+
+ -- Andrej Shadura <andrewsh@debian.org>  Wed, 23 Apr 2025 11:53:37 +0200
+
+resolvconf (1.93) unstable; urgency=medium
+
+  [ Carles Pina i Estany ]
+  * Added po-debconf Catalan translation (Closes: #1103939).
+
+  [ Guillem Jover ]
+  * Add a debian/.gitignore file.
+  * Do not hardcode absolute pathnames to third-party commands.
+  * Fully move files from «/» to canonical «/usr» locations.
+
+  [ Kevin Otte ]
+  * Prioritize IPv6 resolvers when using dhcpcd-base (Closes: #1100720)
+    and rdnssd (Closes: #1100720).
+
+  [ Wolfgang ]
+  * Honor dns-options for creating resolv.conf (Closes: #958045, #1085994)
+
+  [ Andrej Shadura ]
+  * Remove the confusing comment about resolvectl from the resolv.conf header
+    (Closes: #1039696)
+
+  [ Remus-Gabriel Chelu ]
+  * Add Romanian debconf templates translation of resolvconf (Closes: #1033457)
+
+ -- Andrej Shadura <andrewsh@debian.org>  Wed, 23 Apr 2025 09:46:18 +0200
+
 resolvconf (1.92) unstable; urgency=medium
 
   [ Tianyu Chen ]

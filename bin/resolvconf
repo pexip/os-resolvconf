@@ -83,7 +83,7 @@ case "$CMD" in
  --list|-l)
 	;;
   -i)
-	echo $(/lib/resolvconf/list-records)
+	echo $(/usr/lib/resolvconf/list-records)
 	exit 0
 	;;
   *)
@@ -130,7 +130,7 @@ case "$CMD" in
 	fi
 	;;
   --list|-l)
-	for f in $(/lib/resolvconf/list-records)
+	for f in $(/usr/lib/resolvconf/list-records)
 	do
 		echo "# resolv.conf from $f"
 		cat $f
@@ -170,7 +170,7 @@ case "$CMD" in
   -a)
 	OLD_CONTENT=""
 	[ -f "$IFACE" ] && OLD_CONTENT="$(cat "$IFACE")"
-	NEW_CONTENT="$(/lib/resolvconf/normalize-resolvconf)"
+	NEW_CONTENT="$(/usr/lib/resolvconf/normalize-resolvconf)"
 	# Proceed only if content has changed. The test here can't
 	# eliminate 100% of redundant invocations of update scripts
 	# because we don't do any locking; however it certainly does

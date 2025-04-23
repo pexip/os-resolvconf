@@ -8,8 +8,8 @@ Wants=network-pre.target
 
 [Service]
 RemainAfterExit=yes
-ExecStart=/sbin/resolvconf --enable-updates
-ExecStop=/sbin/resolvconf --disable-updates
+ExecStart=/usr/sbin/resolvconf --enable-updates
+ExecStop=/usr/sbin/resolvconf --disable-updates
 
 [Install]
 WantedBy=sysinit.target

@@ -23,10 +23,10 @@
 # Licensed under the GNU GPL.  See /usr/share/doc/resolvconf/copyright.
 
 set -e
-PATH=/sbin:/bin
+PATH=/usr/sbin:/usr/bin:/sbin:/bin
 
-[ -x /usr/sbin/named ] || exit 0
-[ -x /lib/resolvconf/list-records ] || exit 1
+command -v named >/dev/null || exit 0
+[ -x /usr/lib/resolvconf/list-records ] || exit 1
 [ -f /etc/bind/named.conf.options ] || exit 0
 
 # Defaults
@@ -55,7 +55,7 @@ uniquify()
 }
 
 # Get list of records, excluding all those for the loopback interface
-RSLVCNFFILES="$(/lib/resolvconf/list-records | sed -e '/^lo$/d' -e '/^lo[.]/d')"
+RSLVCNFFILES="$(/usr/lib/resolvconf/list-records | sed -e '/^lo$/d' -e '/^lo[.]/d')"
  
 ### Compile semicolon-separated list nameservers ###
 NMSRVRS=""
@@ -98,7 +98,7 @@ cat /etc/bind/named.conf.options \
 	>> "$TMP_FILE"
 
 # Reload named unless we know its options haven't changed
-if [ -x /usr/bin/diff ] && [ -f "$DYNAMIC_OPTS_FILE" ] && /usr/bin/diff -q "$DYNAMIC_OPTS_FILE" "$TMP_FILE" > /dev/null ; then
+if command -v diff >/dev/null && [ -f "$DYNAMIC_OPTS_FILE" ] && diff -q "$DYNAMIC_OPTS_FILE" "$TMP_FILE" > /dev/null ; then
 	# No change
 	rm -f "$TMP_FILE"
 else

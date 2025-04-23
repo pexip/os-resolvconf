@@ -5,7 +5,7 @@
 # This file is part of the resolvconf package.
 #
 
-[ -x /sbin/resolvconf ] || exit 0
+[ -x /usr/sbin/resolvconf ] || exit 0
 
 case "$ADDRFAM" in
   inet|inet6) :      ;;
@@ -13,5 +13,5 @@ case "$ADDRFAM" in
   *)          exit 0 ;;
 esac
 
-/sbin/resolvconf -d "${IFACE}.${ADDRFAM}" || :
+/usr/sbin/resolvconf -d "${IFACE}.${ADDRFAM}" || :
 

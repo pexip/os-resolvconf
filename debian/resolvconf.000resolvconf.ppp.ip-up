@@ -8,7 +8,7 @@
 # This file is part of the resolvconf package.
 #
 
-[ -x /sbin/resolvconf ] || exit 0
+[ -x /usr/sbin/resolvconf ] || exit 0
 
 [ "$USEPEERDNS" ] || exit 0
 
@@ -29,5 +29,5 @@ if [ "$DNS2" ] ; then
 "
 fi
 
-echo -n "$R" | /sbin/resolvconf -a "${PPP_IFACE}.pppd"
+echo -n "$R" | /usr/sbin/resolvconf -a "${PPP_IFACE}.pppd"
 
