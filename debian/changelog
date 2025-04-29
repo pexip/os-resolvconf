@@ -1,3 +1,9 @@
+resolvconf (1.92+pexip25u1) pexip-trixie; urgency=medium
+
+  * Initial trixie build
+
+ -- Mark Hymers <mark.hymers@pexip.com>  Tue, 29 Apr 2025 22:57:40 +0100
+
 resolvconf (1.92) unstable; urgency=medium
 
   [ Tianyu Chen ]
