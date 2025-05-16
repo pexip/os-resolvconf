@@ -1,3 +1,9 @@
+resolvconf (1.94+pexip25u1) pexip-trixie; urgency=medium
+
+  * New upstream release
+
+ -- Mark Hymers <mark.hymers@pexip.com>  Fri, 16 May 2025 10:49:05 +0100
+
 resolvconf (1.94) unstable; urgency=medium
 
   * Sync interface order lists between interface-order and list-records.
