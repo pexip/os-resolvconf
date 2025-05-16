@@ -1,5 +1,5 @@
 etc
-bin/resolvconf sbin
-bin/list-records lib/resolvconf
+bin/resolvconf usr/sbin
+bin/list-records usr/lib/resolvconf
 bin/dump-debug-info usr/share/resolvconf
-bin/normalize-resolvconf lib/resolvconf
+bin/normalize-resolvconf usr/lib/resolvconf

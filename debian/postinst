@@ -94,7 +94,7 @@ case "$1" in
 						cp -a /etc/resolv.conf /etc/resolv.conf.dpkg-old
 					fi
 					# Before creating the link, make sure that the original file is
-					# at the target of the link.  /sbin/resolvconf will overwrite
+					# at the target of the link.  /usr/sbin/resolvconf will overwrite
 					# this when it does an update, of course.
 					if [ ! -e /run/resolvconf/resolv.conf ] ; then
 						cp -aH /etc/resolv.conf /run/resolvconf/resolv.conf

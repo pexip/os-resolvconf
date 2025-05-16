@@ -243,10 +243,10 @@ configuration.
 6. Check /etc/resolv.conf to make sure that its contents make sense.
 
 If /etc/resolv.conf is not symlinked to /run/resolvconf/resolv.conf then
-a warning message will be printed when /sbin/resolvconf is run.  If you want
-to keep resolvconf installed but for some reason do not want /etc/resolv.conf
-to be symlinked to /run/resolvconf/resolv.conf then you can disable the
-warning message by setting REPORT_ABSENT_SYMLINK=no in
+a warning message will be printed when /usr/sbin/resolvconf is run.  If you
+want to keep resolvconf installed but for some reason do not want
+/etc/resolv.conf to be symlinked to /run/resolvconf/resolv.conf then you
+can disable the warning message by setting REPORT_ABSENT_SYMLINK=no in
 /etc/default/resolvconf.
 
 Order of entries in resolv.conf
@@ -330,10 +330,10 @@ Technical overview
   + update-libc.d/
     Scripts to run when the resolv.conf file changes
 * Symlink /etc/resolv.conf -> /run/resolvconf/resolv.conf
-* Configurers of interfaces call /sbin/resolvconf to provide
+* Configurers of interfaces call /usr/sbin/resolvconf to provide
   resolv.conf-like information after the interface is brought up.  They
   call it again to delete the information when the interface is brought
-  down.  /sbin/resolvconf then does the equivalent of
+  down.  /usr/sbin/resolvconf then does the equivalent of
   "/etc/init.d/resolvconf reload".
 * "/etc/init.d/resolvconf reload" calls scripts in
   /etc/resolvconf/update.d/ which update DNS cache configuration file
@@ -372,17 +372,17 @@ adapted to work with resolvconf while preserving backward compatibility by
 introducing a code fragment like the following.
 
     MYNAME=foo
-    if [ -x /sbin/resolvconf ] ; then
+    if [ -x /usr/sbin/resolvconf ] ; then
       if [ "$DIRECTION" = "up" ] ; then
-         echo -n "$RESOLVINFO" | /sbin/resolvconf -a "${IFACE}.${MYNAME}"
+         echo -n "$RESOLVINFO" | /usr/sbin/resolvconf -a "${IFACE}.${MYNAME}"
       else
-         /sbin/resolvconf -d "${IFACE}.${MYNAME}"
+         /usr/sbin/resolvconf -d "${IFACE}.${MYNAME}"
       fi
     else
          # Do clever things to /etc/resolv.conf
     fi
 
-/sbin/resolvconf stores the information sent to it and then runs the scripts
+/usr/sbin/resolvconf stores the information sent to it and then runs the scripts
 in /etc/resolvconf/update.d/ .  One of the latter generates the libc resolver
 configuration file.  Others generate lists of forwarders for dnsmasq or pdnsd
 to use.  Any other program that needs to take action when resolver information
@@ -421,7 +421,7 @@ not lost when resolvconf is installed.  Unfortunately this also means that
 those addresses are not removed when interfaces are brought down.
 
 Another way that the resolvconf package helps to address the problem is to
-allow other parties to call /sbin/resolvconf as soon as it appears in the
+allow other parties to call /usr/sbin/resolvconf as soon as it appears in the
 filesystem: nameserver information can be registered with resolvconf before
 the resolvconf's postinst runs.  This means that when, for example, dnsmasq
 and resolvconf are installed in the same dpkg run, and dnsmasq happens to be
@@ -523,7 +523,7 @@ The admin can of course disable resolv.conf automagic by deleting the
 /etc/resolv.conf symlink and putting a static file at that location.
 
 Once you have installed resolvconf properly you don't normally need to run
-/sbin/resolvconf from the command line.  However, I once encountered a
+/usr/sbin/resolvconf from the command line.  However, I once encountered a
 situation in which I did that.  Perhaps it is a useful illustration.  My ISP's
 nameserver went down and thus my caching nameserver could not resolve names.
 I knew of another host belonging to my ISP that I could use so I simply did:
